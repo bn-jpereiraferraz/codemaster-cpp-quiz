@@ -1,0 +1,172 @@
+# CodeMaster C++ Quiz Questions
+# Format: TYPE|Question|Points|Data
+# MC (Multiple Choice): MC|question|points|optionA,optionB,optionC,optionD|CorrectAnswer
+# TF (True/False): TF|question|points|true/false
+
+# ===== BASICS & SYNTAX =====
+MC|What is the correct way to declare a variable in C++?|5|int x;,integer x;,var x;,x as int;|A
+MC|Which symbol is used for single-line comments in C++?|5|#,//,/*,--|B
+TF|C++ is case-sensitive|5|true
+MC|What is the entry point of a C++ program?|5|start(),begin(),main(),run()|C
+TF|Every C++ statement must end with a semicolon|5|true
+MC|Which header file is needed for cout?|5|<stdio.h>,<iostream>,<conio.h>,<stream>|B
+MC|What does endl do?|5|Ends program,Ends loop,Ends line and flushes buffer,Ends function|C
+TF|C++ supports both procedural and object-oriented programming|5|true
+MC|Which operator is used for string concatenation in C++?|5|&,+,.,%|B
+MC|What is the size of an int typically on a 32-bit system?|10|2 bytes,4 bytes,8 bytes,16 bytes|B
+
+# ===== DATA TYPES =====
+MC|Which is NOT a primitive data type in C++?|5|int,float,string,char|C
+TF|bool can only store true or false|5|true
+MC|What is the range of char data type?|10|-128 to 127,-256 to 255,0 to 255,Depends on compiler|A
+MC|Which keyword is used for type conversion?|5|convert,cast,static_cast,typeof|C
+TF|double has more precision than float|5|true
+MC|What does auto keyword do in modern C++?|10|Automatic variables,Type inference,Auto increment,Automatic memory management|B
+MC|Which is the correct way to declare a constant?|5|constant int x = 5;,const int x = 5;,int const x = 5;,Both B and C|D
+TF|unsigned int can store negative values|5|false
+MC|What is the size of bool in C++?|10|1 bit,1 byte,4 bytes,Compiler dependent|B
+MC|Which type is used for large integers?|10|int,long,long long,bigint|C
+
+# ===== OPERATORS =====
+MC|What does the % operator do?|5|Division,Modulus,Percentage,Multiplication|B
+TF|The ++ operator increments a value by 1|5|true
+MC|What is the result of 5 / 2 in C++?|10|2.5,2,3,Error|B
+MC|Which operator has the highest precedence?|10|+,-,*,Parentheses ()|D
+TF|&& is the logical AND operator|5|true
+MC|What does the ternary operator look like?|10|if ? then : else,condition ? true : false,? condition : result,condition then value|B
+MC|Which operator is used for pointer dereferencing?|10|&,*,->,.:|B
+TF|The == operator is used for assignment|5|false
+MC|What does the sizeof operator return?|10|Value of variable,Size in bytes,Type of variable,Address of variable|B
+MC|Which operator cannot be overloaded in C++?|15|+,-,::,*|C
+
+# ===== CONTROL STRUCTURES =====
+MC|Which is the correct syntax for an if statement?|5|if x > 5 then,if (x > 5),if x > 5:,if [x > 5]|B
+TF|else if can be written as elif in C++|5|false
+MC|What does break do in a loop?|5|Pauses loop,Exits loop,Skips iteration,Restarts loop|B
+MC|What does continue do in a loop?|5|Exits loop,Skips to next iteration,Pauses loop,Ends program|B
+TF|A switch statement can work with strings in modern C++|10|false
+MC|Which loop is guaranteed to execute at least once?|10|for,while,do-while,foreach|C
+MC|What is an infinite loop syntax with for?|10|for(;;),for(true),for(1),for(infinity)|A
+TF|You can have multiple conditions in a for loop|10|true
+MC|What keyword is used to exit a switch case?|5|exit,stop,break,return|C
+MC|Which loop is best when you don't know iteration count?|10|for,while,do-while,All are equal|B
+
+# ===== FUNCTIONS =====
+MC|What is the correct syntax for a function?|5|function int add(),int add(),def add(),fun add()|B
+TF|A function must always return a value|5|false
+MC|What keyword indicates no return value?|5|null,nothing,void,empty|C
+MC|What is function overloading?|10|Multiple functions with same name,Calling functions multiple times,Functions calling themselves,Using too many functions|A
+TF|You can have default parameter values in C++|10|true
+MC|What is recursion?|10|Loop inside function,Function calling itself,Multiple function calls,Function returning function|B
+MC|How do you pass by reference?|10|int &x,int *x,int x&,ref int x|A
+TF|Pass by reference allows modifying the original variable|10|true
+MC|What does inline keyword suggest to compiler?|15|Make function faster,Replace function call with function body,Make function public,Make function recursive|B
+MC|What is the return type of main()?|5|void,int,char,any|B
+
+# ===== POINTERS & REFERENCES =====
+MC|What does the & operator do with variables?|10|Gets value,Gets address,Creates reference,Deletes variable|B
+MC|What does the * operator do with pointers?|10|Creates pointer,Dereferences pointer,Gets address,Multiplies|B
+TF|A pointer stores a memory address|10|true
+MC|What is a NULL pointer?|10|Pointer to zero,Pointer to nothing,Invalid pointer,All of the above|D
+TF|You can have a reference to a reference in C++|10|false
+MC|What is the correct way to declare a pointer?|5|int *ptr;,int ptr*;,pointer int ptr;,int &ptr;|A
+MC|What does -> operator do?|10|Greater than,Access member through pointer,Create pointer,Assign pointer|B
+MC|What is a dangling pointer?|15|Null pointer,Pointer to deallocated memory,Uninitialized pointer,All of the above|B
+TF|References must be initialized when declared|10|true
+MC|What does the keyword this represent in a class?|10|Current object,Current class,Current function,Current pointer|A
+
+# ===== MEMORY MANAGEMENT =====
+MC|Which operator allocates memory dynamically?|10|malloc,alloc,new,create|C
+MC|Which operator deallocates memory in C++?|10|free,delete,remove,dealloc|B
+TF|Memory allocated with new must be freed with delete|10|true
+MC|What is a memory leak?|10|Memory overflow,Unreleased dynamic memory,Stack overflow,Null pointer|B
+TF|Stack memory is automatically managed|10|true
+MC|Which is allocated on the heap?|10|Local variables,Static variables,new allocated memory,Function parameters|C
+MC|What does delete[] do?|10|Delete array,Delete multiple pointers,Delete all memory,Delete file|A
+TF|You should check if new succeeded before using the pointer|15|true
+MC|What is RAII principle?|15|Resource Acquisition Is Initialization,Random Access Is Important,Recursive Algorithm Is Inefficient,None of these|A
+MC|Which smart pointer owns the object exclusively?|15|shared_ptr,unique_ptr,weak_ptr,auto_ptr|B
+
+# ===== OBJECT-ORIENTED PROGRAMMING =====
+MC|What is encapsulation?|10|Hiding implementation details,Inheriting properties,Creating objects,Multiple forms|A
+MC|Which keyword creates a class?|5|object,class,struct,type|B
+TF|A class is a blueprint for objects|10|true
+MC|What is the default access modifier in a class?|10|public,private,protected,none|B
+MC|What does the constructor do?|10|Destroys object,Initializes object,Copies object,Compares objects|B
+TF|A class can have multiple constructors|10|true
+MC|What is the destructor symbol?|10|!,~,@,#|B
+TF|Destructors can take parameters|10|false
+MC|What is the this pointer?|10|Pointer to current object,Pointer to parent class,Pointer to heap,Pointer to stack|A
+MC|Which access modifier allows child class access but not outside?|10|public,private,protected,friend|C
+
+# ===== INHERITANCE =====
+MC|Which keyword is used for inheritance?|10|extends,inherits,public,derive|C
+TF|C++ supports multiple inheritance|10|true
+MC|What is the syntax for public inheritance?|10|class Child : public Parent,class Child extends Parent,class Child inherits Parent,class Child <- Parent|A
+MC|What type of inheritance forms a tree structure?|10|Single,Multiple,Multilevel,Hierarchical|D
+TF|Private members of base class are accessible in derived class|10|false
+MC|What is protected access modifier for?|10|Complete restriction,Child class access,Public access,Friend access|B
+TF|A derived class inherits constructors from base class automatically|15|false
+MC|What does virtual keyword enable?|15|Virtual memory,Runtime polymorphism,Virtual functions,Virtual classes|C
+MC|What is method overriding?|10|Redefining base class method in derived class,Having multiple methods with same name,Calling parent method,Deleting inherited method|A
+MC|Which inheritance has diamond problem?|15|Single,Multiple,Multilevel,Hierarchical|B
+
+# ===== POLYMORPHISM =====
+TF|Polymorphism means many forms|10|true
+MC|What is compile-time polymorphism?|15|Virtual functions,Function overloading,Inheritance,Dynamic binding|B
+MC|What is runtime polymorphism achieved through?|15|Templates,Virtual functions,Overloading,Macros|B
+MC|What does the virtual keyword do?|10|Makes function virtual,Enables dynamic binding,Allows overriding,All of the above|D
+TF|Pure virtual functions are declared with = 0|10|true
+MC|What is an abstract class?|15|Class with no objects,Class with pure virtual function,Class with only virtual functions,Class with private constructor|B
+TF|You can create objects of abstract classes|10|false
+MC|What does override keyword do?|15|Overrides base method,Checks if method is overridden correctly,Makes method virtual,Hides base method|B
+MC|What is dynamic binding?|15|Compile-time method resolution,Runtime method resolution,Binding variables,Memory binding|B
+MC|Which type of function call is resolved at runtime?|15|Normal function,Inline function,Virtual function,Static function|C
+
+# ===== STL & CONTAINERS =====
+MC|What does STL stand for?|10|Standard Template Library,System Template Language,Static Type Library,String Template Logic|A
+MC|Which container is dynamic array?|10|array,vector,list,deque|B
+TF|vector automatically resizes when elements are added|10|true
+MC|Which container is LIFO?|10|queue,stack,vector,list|B
+MC|Which container is FIFO?|10|stack,queue,priority_queue,vector|B
+TF|map stores key-value pairs|10|true
+MC|Which container allows fast insertion and deletion?|15|vector,array,list,deque|C
+MC|What does push_back() do?|10|Add at beginning,Add at end,Remove from back,Push to stack|B
+TF|You need to include <vector> to use vector|10|true
+MC|Which iterator moves backward?|15|forward_iterator,reverse_iterator,bidirectional_iterator,random_access_iterator|B
+
+# ===== TEMPLATES =====
+MC|What keyword starts a template?|10|temp,template,generic,type|B
+TF|Templates enable generic programming|10|true
+MC|What is the syntax for function template?|15|template<typename T>,template[type T],generic<T>,type<T>|A
+MC|What does typename keyword indicate?|15|Type name,Template parameter,Variable type,Class type|B
+TF|You can have non-type template parameters|15|true
+MC|What is template specialization?|15|Special template,Specific implementation for a type,Template with special keyword,Generic template|B
+MC|When are templates instantiated?|15|At compile time,At runtime,At link time,Manually|A
+TF|Template code is generated for each type used|15|true
+MC|What is the difference between class and typename in templates?|15|class is for classes only,typename is newer,No difference in most cases,class is deprecated|C
+MC|What are variadic templates?|15|Templates with multiple types,Templates with variable arguments,Virtual templates,None|B
+
+# ===== EXCEPTIONS =====
+MC|Which keyword starts exception handling?|10|catch,try,throw,except|B
+MC|Which keyword throws an exception?|10|raise,throw,except,error|B
+TF|catch block catches exceptions|10|true
+MC|What is the syntax to catch all exceptions?|15|catch(...),catch(all),catch(*),catch(Exception e)|A
+MC|What does noexcept specify?|15|No exceptions allowed,Function won't throw exceptions,Catch all exceptions,None|B
+TF|You can throw any type as an exception|10|true
+MC|What happens if an exception is not caught?|15|Program continues,Program terminates,Exception ignored,Compile error|B
+MC|Which is the standard exception base class?|15|Exception,exception,std::exception,base_exception|C
+TF|Multiple catch blocks can follow a try block|10|true
+MC|What does throw; do without an argument in catch block?|15|Error,Rethrows current exception,Throws nothing,Ends program|B
+
+# ===== MISCELLANEOUS =====
+MC|What does const after function declaration mean?|15|Constant function,Function won't modify object,Constant return,Inline function|B
+TF|namespace is used to avoid name conflicts|10|true
+MC|What is the scope resolution operator?|10|.,::,->,=>|B
+MC|What does static keyword mean for class members?|15|Private member,Shared across all objects,Constant member,Virtual member|B
+TF|friend functions can access private members|15|true
+MC|What is operator overloading?|10|Too many operators,Defining custom behavior for operators,Using wrong operator,Multiple operators|B
+TF|You can overload the dot operator|15|false
+MC|What does extern keyword do?|15|External function,Declares variable defined elsewhere,Public variable,None|B
+MC|What is the difference between struct and class?|15|No difference,Default access is public in struct,struct is C only,struct is deprecated|B
+MC|What does mutable keyword allow?|15|Variable mutation,Modifying const object members,Multiple values,None|B

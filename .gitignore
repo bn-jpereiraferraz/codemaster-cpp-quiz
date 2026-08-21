@@ -1,0 +1,30 @@
+# Compiled executables
+quiz
+*.out
+*.exe
+
+# Object files
+*.o
+*.obj
+
+# Compiler-generated files
+*.d
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Backup files
+*.bak
+*~
