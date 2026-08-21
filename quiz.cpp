@@ -4,6 +4,92 @@
 #include <sstream>   // For string parsing
 #include "quiz.h"
 
+
+//===========================================
+//COLOR THEME CLASS: Static Color Definitions
+//===========================================
+
+//Define all the static ANSI Color Codes
+//These are escape sequences that terminals interpret as colors
+
+const char* ColorTheme::RESET = "\033[0m"; //Reset to default
+const char* ColorTheme::RED = "\033[31m";   //Red text
+const char* ColorTheme::GREEN = "\033[32m"; //Green text
+const char* ColorTheme::YELLOW = "\033[33m";    //Yellow text
+const char* ColorTheme::BLUE = "\033[34m";  //Blue text
+const char* ColorTheme::MAGENTA = "\033[35m";   //Magenta text
+const char* ColorTheme::CYAN = "\033[36m";  //Cyan text
+const char* ColorTheme::BOLD = "\033[1m";   //Bold text
+const char* ColorTheme::DIM = "\033[2m";    //Dimmed text
+
+
+//Print the game banner - called at the start
+void ColorTheme::print_banner(){
+
+    std::cout << CYAN << BOLD;
+    std::cout << R"(      
+      ╔════════════════════════════════════════════════╗
+      ║                                                ║
+      ║     ██████╗ ██╗   ██╗██╗███████╗               ║
+      ║    ██╔═══██╗██║   ██║██║╚══███╔╝               ║
+      ║    ██║   ██║██║   ██║██║  ███╔╝                ║
+      ║    ██║▄▄ ██║██║   ██║██║ ███╔╝                 ║
+      ║    ╚██████╔╝╚██████╔╝██║███████╗               ║
+      ║     ╚══▀▀═╝  ╚═════╝ ╚═╝╚══════╝               ║
+      ║                                                ║
+      ║           CODEMASTER C++ QUIZ                  ║
+      ║        Test Your Programming Skills!           ║
+      ║                                                ║
+      ╚════════════════════════════════════════════════╝
+      )" << RESET << std::endl;
+}
+
+//Print seperator line
+void ColorTheme::print_separator(){
+    std::cout << DIM << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" << RESET << std::endl;
+}
+
+//Print correct answer message with points
+void ColorTheme::print_correct_message(int points){
+    std::cout << GREEN << BOLD << " ✓ CORRECT!" << RESET;
+    std::cout << GREEN << "+" << points << " points" << RESET << std::endl;
+}
+
+//Print wrong answer message
+void ColorTheme::print_wrong_message(){
+    std::cout << RED << BOLD << " ✗ WRONG!" << RESET << std::endl;
+} 
+
+//Print question header with number
+void ColorTheme::print_question_header(int current, int total){
+    std::cout << "\n" << YELLOW << BOLD << "╔═══ Question " << current << " of " << total << " ═══╗" << RESET << std::endl;
+}
+
+// Print progress bar showing quiz completion
+void ColorTheme::print_progress_bar(int current, int total){
+    int barWidth = 40; //Width of the progress bar in charecters
+    float progress = (float)current/total; //Percentage calculation
+
+    std::cout << CYAN << "Progress [";
+
+    //Calculate how many "filled" blocks to show
+    int filled = barWidth * progress;
+
+    //Draw progress bar
+    for (int i = 0; i < barWidth; i++){
+        if (i < filled){
+            std::cout << "█"; //Filled block
+        }else {
+            std::cout << "░"; //empty block
+        }
+    }
+
+    //Show percentage of progress
+    std::cout << "] " << int(progress * 100.0) << "%" << RESET << std::endl;
+}
+
+
+
 //====================================
 //BASE CLASSE: Question Implementation
 //====================================
@@ -113,7 +199,7 @@ bool TrueFalseQuestion::checkAnswer(std::string answer){
 
 //Constructor - initializes the game with 0 points
 QuizGame::QuizGame()
-    :totalScore(0), earnedScore(0){
+    :totalScore(0), earnedScore(0), correctCount(0), currentStreak(0), bestStreak(0){
         //Initializer list sets both scores to 0
         //The questions vector is automatically initialized(empty)
         //No code needed in the body - initializer list did everything
@@ -173,86 +259,220 @@ void QuizGame::load_default_questions(){
 
 //Run the entire quiz game
 void QuizGame::run(){
-    //Display welcome Header
-    std::cout << "\n========================================" << std::endl;
-    std::cout << "          CODEMASTER QUIZ GAME" << std::endl;
-    std::cout << "=======================================" << std::endl;
-    std::cout << "Total Questions: " << questions.size() << std::endl;
+    //Display Flashy Banner
+    ColorTheme::print_banner();
 
-    //Reset scores to 0 (in case run() is called multiple times)
+    std::cout << ColorTheme::BOLD << "Total Questions: " << questions.size() << ColorTheme::RESET << std::endl;
+    std::cout << ColorTheme::DIM << "Answer carefully and build your streak!\n" << ColorTheme::RESET << std::endl;
+
+    //Reset Scores and stats to 0 (in case run() is called multiple times)
     totalScore = 0;
     earnedScore = 0;
+    correctCount = 0;
+    currentStreak = 0;
+    bestStreak = 0;
 
     //Loop through all questions using index
-    //size_t is the proper type for sizes/indexes (unsigned integer)
-    for (size_t i = 0; i < questions.size(); i++)
+    for(size_t i = 0; i < questions.size(); i++)
     {
         Question* q = questions[i]; //Get pointer to current question
 
-        //Question number display
-        std::cout << "\n--- Question " << (i + 1) << " ---";
+        //Show progress bar
+        ColorTheme::print_progress_bar(i, questions.size());
 
-        //Polymorphism is magic here
-        //Even though 'q' is type Question*, it calls the CORRECT display()
-        //if q points to MultipleChoiceQuestion, calls MultipleChoiceQuestion::display()
-        //if q points to TrueFalseQuestion, calls TrueFalseQuestion::display()
-        //This is because display() is virtual
+        //Question header with colors
+        ColorTheme::print_question_header(i + 1, questions.size());
 
+        //Display the question (Polymorphism)
         q->display();
 
-        //Get suer input
+        //Get user input
         std::string userAnswer;
-        std::getline(std::cin, userAnswer); //Read entire line (better than cin >>) in this case
+        std::getline(std::cin, userAnswer);
 
-        //Check if answer is correct(another example of polymorphism)
+        //Check if answer is correct
         if (q->checkAnswer(userAnswer)){
-            std::cout << "✓ Correct! +" << q->get_points() << " points" << std::endl;
-            earnedScore += q->get_points(); //Add points to earned score
+            ColorTheme::print_correct_message(q->get_points());
+            earnedScore += q->get_points();
+            correctCount++;
+            currentStreak++; //Increment streak;
+
+            //Uodate best streak
+            if (currentStreak > bestStreak) {
+                bestStreak = currentStreak;
+            }
+            //Streak milestones
+            if (currentStreak == 3){
+                std::cout << ColorTheme::YELLOW << " 🔥 3 in a Row! Keep it up!" << ColorTheme::RESET << std::endl;
+            } else if (currentStreak == 5) {
+                std::cout << ColorTheme::MAGENTA << " ⚡ 5 STREAK! You're on fire!" << ColorTheme::RESET << std::endl;
+            } else if (currentStreak == 10) {
+                std::cout << ColorTheme::RED << ColorTheme::BOLD << " 💥 10 STREAK! UNSTOPPABLE!" << ColorTheme::RESET << std::endl;
+            }
         }
-        else{
-            std::cout << "✗ Wrong!" << std::endl;
+        else {
+            ColorTheme::print_wrong_message();
+            currentStreak = 0; //Reset Current Streak to 0 when wrong answer
         }
         //Track total possible points
         totalScore += q->get_points();
+
+        //Show stats every 5 questions
+        if ((i + 1) % 5 == 0 && (i + 1) < questions.size()){
+            display_live_stats(i + 1, questions.size());
+            std::cout << ColorTheme::DIM << "\nPress Enter to continue..." << ColorTheme::RESET;
+            std::cin.get(); //Wait for user to press Enter
+        }
     }
-    //after all questions, show results
+
+    //After all questions, show results
     display_results();
+    //Show Achievements
+    display_achievements();
 }
 
 
-//Display final quiz results with grade 
+//Display final quiz results with grade
 void QuizGame::display_results(){
-    std::cout << "\n=======================================" << std::endl;
-    std::cout << "               QUIZ COMPLETE!" << std::endl;
-    std::cout <<   "=======================================" << std::endl;
-    std::cout << "Your score: " << earnedScore << " / " << totalScore << std::endl;
+
+    std::cout << "\n";
+    ColorTheme::print_separator();
+    ColorTheme::print_separator();
+
+    std::cout << ColorTheme::CYAN << ColorTheme::BOLD;
+    std::cout << "\n            🎊 QUIZ COMPLETE! 🎊\n" << ColorTheme::RESET << std::endl;
+
+    ColorTheme::print_separator();
+
+    //Show final score with colors
+    std::cout << ColorTheme::BOLD << "Final Score: " << ColorTheme::YELLOW;
+    std::cout << earnedScore << " / " << totalScore << ColorTheme::RESET << std::endl;
 
     //Edge case: no questions were answered
     if (totalScore == 0){
-        std::cout << "No questions were answered!" << std::endl;
-        return; //Exit to avoid division by 0;
+        std::cout << ColorTheme::RED << "No questions were answered!" << ColorTheme::RESET << std::endl;
+        return;
     }
 
-    //Calculate percantage
-    //casting the int type into a double - decimal division
-    //Without cast = 7/10 = 0
-    //with cast = 7.0 / 10.0 = 0.7
+    //Calculate percentage
     double percentage = (double)earnedScore / totalScore * 100;
-    std::cout << "Percentage: " << percentage << "%" << std::endl;
+    std::cout << ColorTheme::BOLD << "Percentage: " << ColorTheme::CYAN;
+    std::cout.precision(1);
+    std::cout << std::fixed << percentage << "%" << ColorTheme::RESET << std::endl;
 
-    //Grade calculation
+    //Show Correct Count
+    std::cout << ColorTheme::BOLD << "Correct Answers: " << ColorTheme::GREEN;
+    std::cout << correctCount << " / " << questions.size() << ColorTheme::RESET << std::endl;
+
+    //Show best streak
+    std::cout << ColorTheme::BOLD << "Best Streak: " << ColorTheme::MAGENTA;
+    std::cout << bestStreak << ColorTheme::RESET << std::endl << std::endl;
+
+    //Grade Calculation with colors
+    std::cout << ColorTheme::BOLD << "Grade: ";
     if (percentage >= 80){
-        std::cout << "Grade: A - Excellent!" << std::endl;
+        std::cout << ColorTheme::GREEN << "A - Excellent! 🌟" << ColorTheme::RESET << std::endl;
     }
     else if(percentage >= 60){
-        std::cout << "Grade: B - Good Job!" << std::endl;
+        std::cout << ColorTheme::CYAN << "B - Good Job! 👍" << ColorTheme::RESET << std::endl;
     }
     else if(percentage >= 40){
-        std::cout << "Grade: C - Keep practicing!" << std::endl;
+        std::cout << ColorTheme::YELLOW << "C - Keep practicing! 📚" << ColorTheme::RESET << std::endl;
     }
     else{
-        std::cout << "Grade: D - Review your Materials!" << std::endl;
+        std::cout << ColorTheme::RED << "D - Review your Materials! 📖" << ColorTheme::RESET << std::endl;
     }
+
+    ColorTheme::print_separator();
+}
+
+//Display live stats during the quiz - show current performance
+void QuizGame::display_live_stats(int current, int /* total */){
+    ColorTheme::print_separator();
+
+    //calculate accuracy percentage
+    double accuracy = 0.0;
+    if (current > 0){
+        accuracy = (double)correctCount / current * 100.0;
+    }
+
+    //Display stats in a box
+    std::cout << ColorTheme::CYAN << "┌─────────────────────────────────────────┐" << std::endl;
+    std::cout << "| " << ColorTheme::BOLD << "STATS" << ColorTheme::RESET << ColorTheme::CYAN;
+    std::cout << "                                 |" << std::endl;
+    std::cout << "├─────────────────────────────────────────┤" << std::endl;
+
+    //Score
+    std::cout << "| Score: " << ColorTheme::YELLOW << earnedScore << " / " << totalScore;
+    std::cout << ColorTheme::CYAN;
+    
+    //Padding to align
+    int padding = 29 - std::to_string(earnedScore).length() - std::to_string(totalScore).length();
+    for (int i = 0; i < padding; i++) {
+        std::cout << " ";
+    }
+    std::cout << "|" << std::endl;
+
+    //Accuracy
+    std::cout << "| Accuracy: " << ColorTheme::GREEN;
+    std::cout.precision(1);
+    std::cout << std::fixed << accuracy << "%";
+    std::cout << ColorTheme::CYAN;
+    padding = 26 - 4; //Adjust for percentage display
+    for (int i = 0; i < padding; i++) {
+        std::cout << " ";
+    }
+    std::cout << "|" << std::endl;
+
+    //Current streak
+    std::cout << "| Current Streak: " << ColorTheme::MAGENTA << currentStreak;
+    std::cout << ColorTheme::CYAN;
+    padding = 22 - std::to_string(currentStreak).length();
+    for (int i = 0; i < padding; i++) {
+        std::cout << " ";
+    }
+    std::cout << "|" << std::endl;
+
+    //Best streak
+    std::cout << "| Best Streak: " << ColorTheme::MAGENTA << bestStreak;
+    std::cout << ColorTheme::CYAN;
+    padding = 25 - std::to_string(bestStreak).length();
+    for (int i = 0; i < padding; i++) {
+        std::cout << " ";
+    }
+    std::cout << "|" << std::endl;
+    std::cout << "└─────────────────────────────────────────┘" << ColorTheme::RESET << std::endl;
+
+    ColorTheme::print_separator();
+}
+
+//Display Achievements and badges based on performance
+void QuizGame::display_achievements(){
+    std::cout << "\n" << ColorTheme::YELLOW << ColorTheme::BOLD;
+    std::cout << "🏆 ACHIEVEMENTS: " << ColorTheme::RESET << std::endl;
+
+    //Perfect Score
+    if (earnedScore == totalScore){
+        std::cout << ColorTheme::GREEN << " ⭐ PERFECT SCORE - Flawless Victory!" << ColorTheme::RESET << std::endl;
+    }
+
+    //high Streak achievements
+    if (bestStreak >= 10){
+        std::cout << ColorTheme::MAGENTA << " 🔥 ON FIRE - 10+ Question Streak!" << ColorTheme::RESET << std::endl;
+    }else if (bestStreak >= 5) {
+        std::cout << ColorTheme::CYAN << " ⚡ HOT STREAK - 5+ Questions in a row!" << ColorTheme::RESET << std::endl;
+    }
+
+    //Accuracy Achievements
+    double accuracy = (double)correctCount / questions.size() * 100.0;
+    if (accuracy >= 90.0) {
+        std::cout << ColorTheme::GREEN << " 🎯 SHARPSHOOTER - 90%+ Accuracy!" << ColorTheme::RESET << std::endl;
+    } else if (accuracy >= 75.0) {
+        std::cout << ColorTheme::BLUE << " 📚 SCHOLAR - 75%+ Accuracy!" << ColorTheme::RESET << std::endl;
+    }
+
+    //Completion Achievement
+    std::cout << ColorTheme::CYAN << " ✅ QUIZ COMPLETED - " << questions.size() << " Questions Answered!" << ColorTheme::RESET << std::endl;
 }
 
 //Helper function - converts one line from the quesitons file into a Question object
