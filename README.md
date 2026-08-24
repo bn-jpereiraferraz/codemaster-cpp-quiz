@@ -370,6 +370,4 @@ Educational project - Free to use and modify for learning purposes.
 
 **Status**: Phase 2 Complete ✅ | Phase 3 Planned 🚧
 
-**Built with 💻 for mastering C++ through practical application**
-
 **Last Updated**: August 2026
