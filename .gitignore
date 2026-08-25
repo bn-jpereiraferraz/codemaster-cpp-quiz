@@ -28,3 +28,13 @@ Thumbs.db
 # Backup files
 *.bak
 *~
+
+# Save files
+savegame.dat
+*.o
+
+# Old monolithic files (kept as backup, not tracked)
+quiz.h
+quiz.cpp
+# Temporary verification files
+VERIFICATION_REPORT.md

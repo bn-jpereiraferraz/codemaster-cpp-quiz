@@ -6,14 +6,26 @@ A fully-featured, educational C++ quiz application demonstrating **advanced Obje
 
 ## 🚀 Quick Start
 
-### Compile
+### Compile (Using Makefile - Recommended)
 ```bash
-g++ -Wall -Wextra -std=c++11 -o quiz main.cpp quiz.cpp
+make
+```
+
+### Compile (Manual)
+```bash
+g++ -Wall -Wextra -std=c++11 -o quiz *.cpp
 ```
 
 ### Run
 ```bash
 ./quiz
+# or
+make run
+```
+
+### Clean Build
+```bash
+make clean
 ```
 
 ---
@@ -77,13 +89,19 @@ g++ -Wall -Wextra -std=c++11 -o quiz main.cpp quiz.cpp
 ### Project Structure
 ```
 cppquiz/
-├── quiz.h              # Class declarations and interfaces
-├── quiz.cpp            # Full implementation (1400+ lines)
-├── main.cpp            # Clean entry point (4-line main!)
-├── questions.txt       # 300 C++ questions (MC + T/F)
-├── savegame.dat        # Auto-generated save file
-├── README.md           # This documentation
-└── .gitignore          # Git ignore patterns
+├── main.cpp                      # Clean entry point
+├── ColorTheme.h / .cpp           # ANSI terminal styling
+├── Question.h / .cpp             # Abstract base class
+├── MultipleChoiceQuestion.h / .cpp  # MC question implementation
+├── TrueFalseQuestion.h / .cpp    # T/F question implementation
+├── Timer.h / .cpp                # Countdown timer system
+├── Lifelines.h / .cpp            # 50/50, Skip, Hint helpers
+├── QuizGame.h / .cpp             # Main game controller
+├── Makefile                      # Build automation
+├── questions.txt                 # 300 C++ questions
+├── savegame.dat                  # Auto-generated save file
+├── README.md                     # This documentation
+└── .gitignore                    # Git ignore patterns
 ```
 
 ### Class Hierarchy

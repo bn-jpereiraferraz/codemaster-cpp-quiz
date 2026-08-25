@@ -1,9 +1,10 @@
+#include "QuizGame.h"
+#include "ColorTheme.h"
 #include <iostream>
-#include "quiz.h"
 
 int main() {
     QuizGame game;
-  
+
     // Load questions from file
     if (!game.load_from_file("questions.txt")) {
         game.load_default_questions();  // Fallback
