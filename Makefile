@@ -11,6 +11,8 @@ SOURCES = main.cpp \
           TrueFalseQuestion.cpp \
           Timer.cpp \
           Lifelines.cpp \
+          GlobalTimer.cpp \
+          Lives.cpp \
           QuizGame.cpp
 
 HEADERS = ColorTheme.h \
@@ -19,6 +21,8 @@ HEADERS = ColorTheme.h \
           TrueFalseQuestion.h \
           Timer.h \
           Lifelines.h \
+          GlobalTimer.h \
+          Lives.h \
           QuizGame.h
 
 OBJECTS = $(SOURCES:.cpp=.o)

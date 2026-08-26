@@ -53,4 +53,4 @@ class Lives{
         void set_lives(int lives); //Set current lives for loading saves
 };
 
-#endif LIVES_H
+#endif
