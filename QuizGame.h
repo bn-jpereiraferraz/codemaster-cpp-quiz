@@ -5,6 +5,8 @@
 #include "MultipleChoiceQuestion.h"
 #include "TrueFalseQuestion.h"
 #include "Lifelines.h"
+#include "GlobalTimer.h"
+#include "Lives.h"
 #include <string>
 #include <vector>
 
@@ -69,6 +71,10 @@ private:
 
     //=== GAME OBJECTS ===
     Lifelines lifelines;
+
+    //=== GAME MODE OBJECTS ===
+    GlobalTimer globalTimer; //Quick Attack  - 5 min count down
+    Lives lives; //Survival mode 3 lives game over at 0;
 
 public:
     //=== SETUP ===

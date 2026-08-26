@@ -25,7 +25,9 @@ QuizGame::QuizGame()
      timerEnabled(false),               //Timer off by default
      questionTimeLimit(30),             //Default 30 seconds
      lifelinesEnabled(false),            //Lifelines off by default
-     currentGameMode(CLASSIC)           //Default Classic Mode
+     currentGameMode(CLASSIC),           //Default Classic Mode
+     globalTimer(300),                   //5 minutes for Quickattack
+     lives(3)                            //3 lives for survival
     {
         //Initializer list sets both scores to 0
         //The questions vector is automatically initialized(empty)
