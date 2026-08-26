@@ -24,7 +24,8 @@ QuizGame::QuizGame()
      selectedDifficulty(MIXED),         //Default to all difficulties
      timerEnabled(false),               //Timer off by default
      questionTimeLimit(30),             //Default 30 seconds
-     lifelinesEnabled(false)            //Lifelines off by default
+     lifelinesEnabled(false),            //Lifelines off by default
+     currentGameMode(CLASSIC)           //Default Classic Mode
     {
         //Initializer list sets both scores to 0
         //The questions vector is automatically initialized(empty)
@@ -781,6 +782,35 @@ void QuizGame::disable_lifelines(){
              << ColorTheme::RESET << std::endl;
 }
 
+//Set game mode
+void QuizGame::set_game_mode(Gamemode mode){
+    currentGameMode = mode;
+
+    std::cout << ColorTheme::GREEN << "✓ Game mode set to: ";
+
+    switch (mode){
+        case CLASSIC:
+            std::cout << "Classic (Configurable)" << ColorTheme::RESET << std::endl;
+            break;
+        case QUICK_ATTACK: 
+            std::cout << "Quick Attack (5 min time limit)" << ColorTheme::RESET << std::endl;
+            break;
+        case SURVIVAL:
+            std::cout << "Survival (3 lives)" << ColorTheme::RESET << std::endl;
+            break;
+        case MARATHON:
+            std::cout << "Marathon (All 300 questions)" << ColorTheme::RESET << std::endl;
+            break;
+        case LIGHTNING:
+            std::cout << "Lightning round(10s per question)" << ColorTheme::RESET << std::endl;
+            break;
+        case PRACTICE:
+            std::cout << "Practice Mode (No Pressure)" << ColorTheme::RESET << std::endl;
+            break;
+    }
+    
+}
+
 //====================
 //MENU SYSTEM -Phase 2
 //====================
@@ -813,6 +843,70 @@ void QuizGame::show_main_menu(){
               << ColorTheme::RESET << std::endl;
     std::cout << "\n";
     ColorTheme::print_separator();
+}
+
+//Game mode selection menu
+void QuizGame::show_game_mode_menu(){
+    std::cout << "\n\n";
+    ColorTheme::print_separator();
+    ColorTheme::print_separator();
+
+    //Title
+    std::cout << ColorTheme::CYAN << ColorTheme::BOLD;
+    std::cout << "\n";
+    std::cout << "    ╔═══════════════════════════════════════════╗\n";
+    std::cout << "    ║                                           ║\n";
+    std::cout << "    ║        🎮 SELECT GAME MODE 🎮             ║\n";
+    std::cout << "    ║                                           ║\n";
+    std::cout << "    ╚═══════════════════════════════════════════╝\n";
+    std::cout << ColorTheme::RESET << "\n";
+
+    //Mode 1: Classic
+    std::cout << ColorTheme::GREEN << "    ▸ " << ColorTheme::BOLD << "[1]" 
+    << ColorTheme::RESET << ColorTheme::GREEN << " 🎯 Classic Mode" 
+    << ColorTheme::RESET << std::endl;
+    
+    std::cout << ColorTheme::DIM << "      Fully customizable quiz experience"
+    << ColorTheme::RESET << "\n\n";
+
+    //Mode 2:Quick Attack
+    std::cout << ColorTheme::YELLOW << "    ▸ " << ColorTheme::BOLD << "[2]" 
+    << ColorTheme::RESET << ColorTheme::YELLOW << " ⚡ Quick Attack" << ColorTheme::RESET
+    << std::endl;
+
+    std::cout << ColorTheme::DIM << "      5 Minutes ° Wrong = -15s ° Race against time!"
+    << ColorTheme::RESET << "\n\n";
+
+    //Mode 3: Survival
+    std::cout << ColorTheme::RED << "    ▸ " << ColorTheme::BOLD << "[3]" << ColorTheme::RESET
+    << ColorTheme::RED << " 💀 Survival Mode" << ColorTheme::RESET << std::endl;
+
+    std::cout << ColorTheme::DIM << "      3 Lives ° One mistake closer to game over"
+    << ColorTheme::RESET << "\n\n";
+
+    //Mode 4: Marathon
+    std::cout << ColorTheme::MAGENTA << "    ▸ " << ColorTheme::BOLD << "[4]" << ColorTheme::RESET
+    << ColorTheme::MAGENTA << " 🏃 Marathon Mode" << ColorTheme::RESET << std::endl;
+
+    std::cout << ColorTheme::DIM << "      All 300 questions ° Can you Finish?" << ColorTheme::RESET << "\n\n";
+
+    //Mode 5: Lightning
+    std::cout << ColorTheme::CYAN << "    ▸ " << ColorTheme::BOLD << "[5]" << ColorTheme::RESET
+    << ColorTheme::CYAN << " ⚡ Lightning Round" << ColorTheme::RESET << std::endl;
+
+    std::cout << ColorTheme::DIM << "      10 seconds per question ° Think fast!"
+    << ColorTheme::RESET << "\n\n";
+
+    //Mode 6: Practice
+    std::cout << ColorTheme::BLUE << "    ▸ " << ColorTheme::BOLD << "[6]" << ColorTheme::RESET
+    << ColorTheme::BLUE << " 📚 Practice Mode" << ColorTheme::RESET << std::endl;
+
+    std::cout << ColorTheme::DIM << "      No Pressure ° See answers ° Learn!"
+    << ColorTheme::RESET << "\n\n";
+
+    std::cout << "\n";
+    ColorTheme::print_separator();
+
 }
 
   // Interactive configuration menu

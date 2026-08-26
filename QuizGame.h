@@ -19,6 +19,20 @@ enum Difficulty {
     MIXED = 0      // All difficulties (no filter)
 };
 
+//==============
+//GAME MODE ENUM
+//==============
+//Different gameplay modes with unique rules
+
+enum Gamemode{
+    CLASSIC, //Normal mode configurable (current gameplay)
+    QUICK_ATTACK, //5min timelimit, wrong answer = -15s penalty
+    SURVIVAL, //3 lives, lose 1 per answer
+    MARATHON, //All 300 questions, track total time
+    LIGHTNING, //10 seconds per questions (strict)
+    PRACTICE //No pressure, see correct answers
+};
+
 //==================
 // GAME MANAGER - Main quiz controller
 //==================
@@ -51,6 +65,7 @@ private:
     bool timerEnabled;            // Timer on/off
     int questionTimeLimit;        // Seconds per question
     bool lifelinesEnabled;        // Lifelines on/off
+    Gamemode currentGameMode;     //Current Game Mode
 
     //=== GAME OBJECTS ===
     Lifelines lifelines;
@@ -72,6 +87,7 @@ public:
 
     //=== MENU & CONFIG ===
     void show_main_menu();     // Display main menu
+    void show_game_mode_menu(); //Display game mode selection
     void configure_game();     // Interactive settings
     bool prompt_load_save();   // Ask to continue saved game (true if loaded)
 
@@ -88,6 +104,7 @@ public:
     void disable_timer();                         // Turn off timer
     void enable_lifelines();                      // Turn on lifelines
     void disable_lifelines();                     // Turn off lifelines
+    void set_game_mode(Gamemode mode);            //Set game mode
 };
 
 #endif
