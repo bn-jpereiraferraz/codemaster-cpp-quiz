@@ -1,4 +1,5 @@
 #include "QuizGame.h"
+#include "GameModes.h"
 #include "ColorTheme.h"
 #include "Timer.h"
 #include <iostream>
@@ -27,7 +28,7 @@ QuizGame::QuizGame()
      lifelinesEnabled(false),            //Lifelines off by default
      currentGameMode(CLASSIC),           //Default Classic Mode
      globalTimer(300),                   //5 minutes for Quickattack
-     lives(3)                            //3 lives for survival
+     lives(3)                            //3 lives for survival 
     {
         //Initializer list sets both scores to 0
         //The questions vector is automatically initialized(empty)
@@ -90,265 +91,42 @@ void QuizGame::load_default_questions(){
 // MAIN GAME LOOP
 //===============
 void QuizGame::run() {
-    // Display banner
-    ColorTheme::print_banner();
+    // Dispatch based on selected game mode
+    switch (currentGameMode) {
+        case CLASSIC:
+            GameModes::run_classic(*this);  // Pass *this = reference to current game
+            break;
 
-    std::cout << "\n" << ColorTheme::CYAN << ColorTheme::BOLD
-              << "📚 Welcome to CodeMaster Quiz!" << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::DIM << "Test your C++ knowledge and earn achievements!\n"
-              << ColorTheme::RESET;
-    ColorTheme::print_separator();
+        case QUICK_ATTACK:
+            GameModes::run_quick_attack(*this);
+            break;
 
-    // Check if questions loaded
-    if (questions.empty()) {
-        std::cerr << ColorTheme::RED << "Error: No questions loaded!"
-                  << ColorTheme::RESET << std::endl;
-        return;
+        case SURVIVAL:
+            GameModes::run_survival(*this);
+            break;
+
+        case MARATHON:
+            GameModes::run_marathon(*this);
+            break;
+
+        case LIGHTNING:
+            GameModes::run_lightning(*this);
+            break;
+
+        case PRACTICE:
+            GameModes::run_practice(*this);
+            break;
+
+        default:
+            // Fallback to classic if unknown mode
+            std::cout << ColorTheme::RED
+                      << "⚠️  Unknown game mode! Defaulting to Classic."
+                      << ColorTheme::RESET << std::endl;
+            GameModes::run_lightning(*this);
+            break;
     }
-
-    // Save loaded scores/progress before filtering (in case we're resuming)
-    int savedEarnedScore = earnedScore;
-    int savedCorrectCount = correctCount;
-    int savedCurrentStreak = currentStreak;
-    int savedBestStreak = bestStreak;
-    int savedBonusPoints = totalBonusPoints;
-    int savedQuestionIndex = currentQuestionIndex;
-
-    // Apply difficulty filter and shuffle
-    filter_by_difficulty(selectedDifficulty);
-    shuffle_questions();
-
-    // Limit to requested count
-    if (filteredQuestions.size() > static_cast<size_t>(totalQuestionsToAsk)) {
-        filteredQuestions.resize(totalQuestionsToAsk);
-    }
-
-    // Calculate total possible score
-    totalScore = 0;
-    for (Question* q : filteredQuestions) {
-        totalScore += q->get_points();
-    }
-
-    // Restore loaded progress if we were resuming from save
-    earnedScore = savedEarnedScore;
-    correctCount = savedCorrectCount;
-    currentStreak = savedCurrentStreak;
-    bestStreak = savedBestStreak;
-    totalBonusPoints = savedBonusPoints;
-    currentQuestionIndex = savedQuestionIndex;
-
-    std::cout << ColorTheme::YELLOW << "\n🎯 Quiz configured:" << ColorTheme::RESET << std::endl;
-    std::cout << "   Questions: " << ColorTheme::BOLD << filteredQuestions.size()
-              << ColorTheme::RESET << std::endl;
-    std::cout << "   Total Points: " << ColorTheme::BOLD << totalScore
-              << ColorTheme::RESET << std::endl;
-
-    if (timerEnabled) {
-        std::cout << "   Timer: " << ColorTheme::RED << questionTimeLimit
-                  << " seconds per question" << ColorTheme::RESET << std::endl;
-    }
-
-    if (lifelinesEnabled) {
-        std::cout << "   Lifelines: " << ColorTheme::GREEN << "Enabled 💡"
-                  << ColorTheme::RESET << std::endl;
-        std::cout << ColorTheme::DIM << "   → Type '5050' to remove 2 wrong answers (MC only)\n";
-        std::cout << "   → Type 'skip' to skip a question without penalty" << ColorTheme::RESET << std::endl;
-    }
-
-    std::cout << "\n" << ColorTheme::DIM << "Press Enter to begin..."
-              << ColorTheme::RESET;
-    std::cin.get();
-
-    // Main quiz loop
-    for (size_t i = currentQuestionIndex; i < filteredQuestions.size(); i++) {
-        currentQuestionIndex = i;  // Update for saving
-        Question* q = filteredQuestions[i];
-
-        // Clear screen effect
-        std::cout << "\n\n\n";
-
-        // Display question header
-        ColorTheme::print_question_header(i + 1, filteredQuestions.size());
-        ColorTheme::print_progress_bar(i + 1, filteredQuestions.size());
-
-        // Show lifelines if enabled
-        if (lifelinesEnabled) {
-            lifelines.display_available();
-        }
-
-        std::cout << "\n";
-
-        // Display question
-        q->display();
-
-        // Check if this is a Multiple Choice question (for 50/50)
-        MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(q);
-
-        // Start timer if enabled
-        Timer questionTimer(questionTimeLimit);
-        if (timerEnabled) {
-            questionTimer.start();
-            std::cout << ColorTheme::YELLOW << "\n⏱️  Timer: " << questionTimeLimit
-                      << " seconds" << ColorTheme::RESET << std::endl;
-        }
-
-        // Get user answer (with lifeline options)
-        std::string answer;
-        bool skipped = false;
-        bool usedFiftyFifty = false;
-
-        while (true) {
-            std::cout << ColorTheme::CYAN << "\nYour answer";
-
-            // Show lifeline shortcuts
-            if (lifelinesEnabled) {
-                std::cout << ColorTheme::DIM << " (or ";
-                if (lifelines.can_use_fifty_fifty() && mcq) {
-                    std::cout << "'5050' for 50/50";
-                }
-                if (lifelines.can_use_skip()) {
-                    if (lifelines.can_use_fifty_fifty() && mcq) std::cout << ", ";
-                    std::cout << "'skip'";
-                }
-                std::cout << ")";
-            }
-
-            std::cout << ColorTheme::RESET << ": ";
-            std::getline(std::cin, answer);
-
-            // Convert to lowercase for comparison
-            std::string lowerAnswer = answer;
-            for (char& c : lowerAnswer) c = tolower(c);
-
-            // Check for lifeline usage
-            if (lowerAnswer == "5050" && lifelines.can_use_fifty_fifty() && mcq) {
-                if (lifelines.use_fifty_fifty()) {
-                    apply_fifty_fifty(mcq);
-                    usedFiftyFifty = true;
-                    continue;  // Ask for answer again
-                }
-            }
-            else if (lowerAnswer == "skip" && lifelines.can_use_skip()) {
-                if (lifelines.use_skip()) {
-                    std::cout << ColorTheme::YELLOW << "\n⏭️  Question skipped!"
-                              << ColorTheme::RESET << std::endl;
-                    skipped = true;
-                    break;
-                }
-            }
-            else {
-                // Validate answer format before accepting it
-                if (mcq) {
-                    // Multiple choice - must be A, B, C, or D
-                    if (answer.length() == 1) {
-                        char upperAnswer = toupper(answer[0]);
-                        if (upperAnswer >= 'A' && upperAnswer <= 'D') {
-                            break;  // Valid answer!
-                        }
-                    }
-                    // Invalid format - show error and ask again
-                    std::cout << ColorTheme::RED << "❌ Invalid input! Please enter A, B, C, or D."
-                              << ColorTheme::RESET << std::endl;
-                    continue;
-                }
-                else {
-                    // True/False question - must be "true" or "false"
-                    if (lowerAnswer == "true" || lowerAnswer == "false" ||
-                        lowerAnswer == "t" || lowerAnswer == "f") {
-                        break;  // Valid answer!
-                    }
-                    // Invalid format - show error and ask again
-                    std::cout << ColorTheme::RED << "❌ Invalid input! Please enter 'true' or 'false'."
-                              << ColorTheme::RESET << std::endl;
-                    continue;
-                }
-            }
-        }
-
-        // Stop timer
-        int secondsUsed = 0;
-        if (timerEnabled) {
-            questionTimer.stop();
-            secondsUsed = questionTimer.get_elapsed_seconds();
-        }
-
-        // Check answer (if not skipped)
-        if (!skipped) {
-            bool correct = q->checkAnswer(answer);
-            int basePoints = q->get_points();
-
-            if (correct) {
-                // Calculate bonus points for speed
-                int bonusPoints = 0;
-                if (timerEnabled) {
-                    bonusPoints = calculate_bonus_points(basePoints, secondsUsed, questionTimeLimit);
-                    totalBonusPoints += bonusPoints;
-                }
-
-                earnedScore += basePoints + bonusPoints;
-                correctCount++;
-                currentStreak++;
-
-                if (currentStreak > bestStreak) {
-                    bestStreak = currentStreak;
-                }
-
-                // Display success message
-                ColorTheme::print_correct_message(basePoints);
-
-                if (bonusPoints > 0) {
-                    std::cout << ColorTheme::MAGENTA << "⚡ SPEED BONUS: +"
-                              << bonusPoints << " points! (" << secondsUsed
-                              << "s)" << ColorTheme::RESET << std::endl;
-                }
-
-                // Streak milestones
-                if (currentStreak == 3) {
-                    std::cout << ColorTheme::YELLOW << "🔥 3-STREAK! You're on fire!"
-                              << ColorTheme::RESET << std::endl;
-                }
-                else if (currentStreak == 5) {
-                    std::cout << ColorTheme::YELLOW << "🔥🔥 5-STREAK! Unstoppable!"
-                              << ColorTheme::RESET << std::endl;
-                }
-                else if (currentStreak == 10) {
-                    std::cout << ColorTheme::YELLOW << "🔥🔥🔥 10-STREAK! LEGENDARY!"
-                              << ColorTheme::RESET << std::endl;
-                }
-            }
-            else {
-                // Wrong answer
-                ColorTheme::print_wrong_message();
-                currentStreak = 0;  // Reset streak
-            }
-        }
-
-        // Live stats every 5 questions
-        if ((i + 1) % 5 == 0 && i + 1 < filteredQuestions.size()) {
-            display_live_stats(i + 1, filteredQuestions.size());
-
-            // Auto-save every 5 questions
-            save_game("savegame.dat");
-
-            std::cout << ColorTheme::DIM << "\nPress Enter to continue..."
-                      << ColorTheme::RESET;
-            std::cin.get();
-        }
-        else {
-            // Small pause between questions
-            std::cout << ColorTheme::DIM << "\nPress Enter for next question..."
-                      << ColorTheme::RESET;
-            std::cin.get();
-        }
-    }
-
-    // Quiz complete - delete save file
-    delete_save();
-
-    // Display final results
-    display_results();
-    display_achievements();
 }
+    
 
 
 //Display final quiz results with grade

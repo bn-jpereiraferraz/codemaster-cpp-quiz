@@ -39,6 +39,12 @@ enum Gamemode{
 // GAME MANAGER - Main quiz controller
 //==================
 class QuizGame {
+    //=== FRIEND CLASSES ===
+    //GameModes needs access to private members
+    //(questions, scores, timers, lifelines, helper methods, etc.)
+    friend class GameModes;
+ 
+
 private:
     //=== HELPER METHODS ===
     Question* parse_question_line(std::string line);  // Parse file format
