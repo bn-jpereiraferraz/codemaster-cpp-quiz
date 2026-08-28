@@ -245,11 +245,22 @@ void QuizGame::display_live_stats(int current, int /* total */){
 
 //Display Achievements and badges based on performance
 void QuizGame::display_achievements(){
+    // Calculate how many questions were actually answered
+    int questionsAnswered = currentQuestionIndex;  // This tracks actual progress
+
+    // Don't show achievements if barely any questions were answered
+    if (questionsAnswered < 3) {
+        std::cout << "\n" << ColorTheme::YELLOW
+                  << "💪 Keep practicing! Try again to earn achievements!"
+                  << ColorTheme::RESET << std::endl;
+        return;
+    }
+
     std::cout << "\n" << ColorTheme::YELLOW << ColorTheme::BOLD;
     std::cout << "🏆 ACHIEVEMENTS: " << ColorTheme::RESET << std::endl;
 
-    //Perfect Score
-    if (earnedScore == totalScore){
+    //Perfect Score (only if answered at least 5 questions)
+    if (earnedScore == totalScore && questionsAnswered >= 5){
         std::cout << ColorTheme::GREEN << " ⭐ PERFECT SCORE - Flawless Victory!" << ColorTheme::RESET << std::endl;
     }
 
@@ -260,16 +271,18 @@ void QuizGame::display_achievements(){
         std::cout << ColorTheme::CYAN << " ⚡ HOT STREAK - 5+ Questions in a row!" << ColorTheme::RESET << std::endl;
     }
 
-    //Accuracy Achievements
-    double accuracy = (double)correctCount / questions.size() * 100.0;
-    if (accuracy >= 90.0) {
-        std::cout << ColorTheme::GREEN << " 🎯 SHARPSHOOTER - 90%+ Accuracy!" << ColorTheme::RESET << std::endl;
-    } else if (accuracy >= 75.0) {
-        std::cout << ColorTheme::BLUE << " 📚 SCHOLAR - 75%+ Accuracy!" << ColorTheme::RESET << std::endl;
+    //Accuracy Achievements (based on questions actually answered, not all 300!)
+    if (questionsAnswered > 0) {
+        double accuracy = (double)correctCount / questionsAnswered * 100.0;
+        if (accuracy >= 90.0) {
+            std::cout << ColorTheme::GREEN << " 🎯 SHARPSHOOTER - 90%+ Accuracy!" << ColorTheme::RESET << std::endl;
+        } else if (accuracy >= 75.0) {
+            std::cout << ColorTheme::BLUE << " 📚 SCHOLAR - 75%+ Accuracy!" << ColorTheme::RESET << std::endl;
+        }
     }
 
-    //Completion Achievement
-    std::cout << ColorTheme::CYAN << " ✅ QUIZ COMPLETED - " << questions.size() << " Questions Answered!" << ColorTheme::RESET << std::endl;
+    //Completion Achievement (show actual number answered, not total loaded!)
+    std::cout << ColorTheme::CYAN << " ✅ QUESTIONS ANSWERED: " << questionsAnswered << ColorTheme::RESET << std::endl;
 }
 
 //Helper function - converts one line from the quesitons file into a Question object
@@ -699,16 +712,25 @@ void QuizGame::show_game_mode_menu(){
     std::cout << "\n    ⚙️   GAME CONFIGURATION ⚙️ \n" << ColorTheme::RESET;
     ColorTheme::print_separator();
 
-    // 1. Question Count
-    std::cout << ColorTheme::CYAN << "\n[1] Question Count" << ColorTheme::RESET << std::endl;
-    std::cout << "    Choose: ";
-    std::cout << ColorTheme::DIM << "50 | 100 | 150 | 200 | 250 | 300" << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
+    // 1. Question Count - Fixed for Marathon mode
+    if (currentGameMode == MARATHON) {
+        // Marathon: All 300 questions (FIXED)
+        set_question_count(300);
+        std::cout << ColorTheme::CYAN << "\n[1] Question Count" << ColorTheme::RESET << std::endl;
+        std::cout << "    " << ColorTheme::YELLOW << "🏃 Marathon Mode: ALL 300 questions (FIXED)"
+                  << ColorTheme::RESET << std::endl;
+    } else {
+        // Other modes: User can choose
+        std::cout << ColorTheme::CYAN << "\n[1] Question Count" << ColorTheme::RESET << std::endl;
+        std::cout << "    Choose: ";
+        std::cout << ColorTheme::DIM << "50 | 100 | 150 | 200 | 250 | 300" << ColorTheme::RESET << std::endl;
+        std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
 
-    int count;
-    std::cin >> count;
-    std::cin.ignore(); // Clear newline
-    set_question_count(count);
+        int count;
+        std::cin >> count;
+        std::cin.ignore(); // Clear newline
+        set_question_count(count);
+    }
 
     // 2. Difficulty
     std::cout << ColorTheme::CYAN << "\n[2] Difficulty Level" << ColorTheme::RESET << std::endl;
@@ -730,40 +752,76 @@ void QuizGame::show_game_mode_menu(){
         default: set_difficulty(MIXED); break;
     }
 
-   // 3. Timer
-   std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
-   std::cout << "    " << ColorTheme::GREEN << "1" << ColorTheme::RESET << " - No Timer (Practice)\n";
-   std::cout << "    " << ColorTheme::YELLOW << "2" << ColorTheme::RESET << " - 60 seconds per question\n";
-   std::cout << "    " << ColorTheme::RED << "3" << ColorTheme::RESET << " - 30 seconds per question\n";
-   std::cout << "    " << ColorTheme::MAGENTA << "4" << ColorTheme::RESET << " - 15 seconds per question(Hard!)\n";
-   std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
+   // 3. Timer - Skip for modes with fixed timing
+   if (currentGameMode == LIGHTNING) {
+       // Lightning: Fixed 10 seconds per question
+       enable_timer(10);
+       std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
+       std::cout << "    " << ColorTheme::YELLOW << "⚡ Lightning Mode: 10 seconds per question (FIXED)"
+                 << ColorTheme::RESET << std::endl;
+   } else if (currentGameMode == QUICK_ATTACK) {
+       // Quick Attack: Uses GlobalTimer (5 min countdown), not per-question timer
+       disable_timer();
+       std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
+       std::cout << "    " << ColorTheme::YELLOW << "🏃 Quick Attack: 5-minute countdown (FIXED)"
+                 << ColorTheme::RESET << std::endl;
+   } else if (currentGameMode == PRACTICE) {
+       // Practice: No pressure mode
+       disable_timer();
+       std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
+       std::cout << "    " << ColorTheme::GREEN << "📚 Practice Mode: No timer (learn at your pace)"
+                 << ColorTheme::RESET << std::endl;
+   } else {
+       // Classic, Marathon, Survival: User can choose
+       std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
+       std::cout << "    " << ColorTheme::GREEN << "1" << ColorTheme::RESET << " - No Timer (Practice)\n";
+       std::cout << "    " << ColorTheme::YELLOW << "2" << ColorTheme::RESET << " - 60 seconds per question\n";
+       std::cout << "    " << ColorTheme::RED << "3" << ColorTheme::RESET << " - 30 seconds per question\n";
+       std::cout << "    " << ColorTheme::MAGENTA << "4" << ColorTheme::RESET << " - 15 seconds per question(Hard!)\n";
+       std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
 
-   int timerChoice;
-   std::cin >> timerChoice;
-   std::cin.ignore();
+       int timerChoice;
+       std::cin >> timerChoice;
+       std::cin.ignore();
 
-    switch(timerChoice) {
-        case 1: disable_timer(); break;
-        case 2: enable_timer(60); break;
-        case 3: enable_timer(30); break;
-        case 4: enable_timer(15); break;
-        default: disable_timer(); break;
-    }
+       switch(timerChoice) {
+           case 1: disable_timer(); break;
+           case 2: enable_timer(60); break;
+           case 3: enable_timer(30); break;
+           case 4: enable_timer(15); break;
+           default: disable_timer(); break;
+       }
+   }
 
-    // 4. Lifelines
-    std::cout << ColorTheme::CYAN << "\n[4] Lifelines" << ColorTheme::RESET << std::endl;
-    std::cout << "    " << ColorTheme::GREEN << "1" << ColorTheme::RESET << " - Enabled (50/50, Skip)\n";
-    std::cout << "    " << ColorTheme::RED << "2" << ColorTheme::RESET << " - Disabled (Hard Mode)\n";
-    std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
-
-    int lifelineChoice;
-    std::cin >> lifelineChoice;
-    std::cin.ignore();
-
-    if (lifelineChoice == 1) {
-        enable_lifelines();
-    } else {
+    // 4. Lifelines - Skip for modes where they don't make sense
+    if (currentGameMode == PRACTICE) {
+        // Practice: No pressure = no need for lifelines
         disable_lifelines();
+        std::cout << ColorTheme::CYAN << "\n[4] Lifelines" << ColorTheme::RESET << std::endl;
+        std::cout << "    " << ColorTheme::GREEN << "📚 Practice Mode: Lifelines disabled (you'll see correct answers anyway)"
+                  << ColorTheme::RESET << std::endl;
+    } else if (currentGameMode == QUICK_ATTACK) {
+        // Quick Attack: Speed mode = no time for lifelines
+        disable_lifelines();
+        std::cout << ColorTheme::CYAN << "\n[4] Lifelines" << ColorTheme::RESET << std::endl;
+        std::cout << "    " << ColorTheme::YELLOW << "🏃 Quick Attack: Lifelines disabled (speed is key!)"
+                  << ColorTheme::RESET << std::endl;
+    } else {
+        // Other modes: User can choose
+        std::cout << ColorTheme::CYAN << "\n[4] Lifelines" << ColorTheme::RESET << std::endl;
+        std::cout << "    " << ColorTheme::GREEN << "1" << ColorTheme::RESET << " - Enabled (50/50, Skip)\n";
+        std::cout << "    " << ColorTheme::RED << "2" << ColorTheme::RESET << " - Disabled (Hard Mode)\n";
+        std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
+
+        int lifelineChoice;
+        std::cin >> lifelineChoice;
+        std::cin.ignore();
+
+        if (lifelineChoice == 1) {
+            enable_lifelines();
+        } else {
+            disable_lifelines();
+        }
     }
 
     // Summary
