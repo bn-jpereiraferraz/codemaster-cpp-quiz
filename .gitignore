@@ -38,3 +38,4 @@ quiz.h
 quiz.cpp
 # Temporary verification files
 VERIFICATION_REPORT.md
+CMakeFiles/CMakeSystem.cmake
