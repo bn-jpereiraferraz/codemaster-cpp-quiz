@@ -5,6 +5,7 @@
 #include "GlobalTimer.h"
 #include "Lives.h"
 #include "MultipleChoiceQuestion.h"
+#include "AsciiArt.h"
 #include <iostream>
 #include <algorithm>
 #include <cctype>
@@ -13,13 +14,8 @@
 
 void GameModes::run_classic(QuizGame& game){
     // Display banner
-    ColorTheme::print_banner();
-
-    std::cout << "\n" << ColorTheme::CYAN << ColorTheme::BOLD
-              << "📚 Welcome to CodeMaster Quiz!" << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::DIM << "Test your C++ knowledge and earn achievements!\n"
-              << ColorTheme::RESET;
-    ColorTheme::print_separator();
+    AsciiArt::display_classic_banner();
+    std::cout << std::endl;
 
     // Check if questions loaded
     if (game.questions.empty()) {
@@ -44,6 +40,10 @@ void GameModes::run_classic(QuizGame& game){
     if (game.filteredQuestions.size() > static_cast<size_t>(game.totalQuestionsToAsk)) {
         game.filteredQuestions.resize(game.totalQuestionsToAsk);
     }
+
+    // Show actual question count being used
+    std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
+              << " questions for this mode" << ColorTheme::RESET << std::endl;
 
     // Calculate total possible score
     game.totalScore = 0;
@@ -101,7 +101,7 @@ void GameModes::run_classic(QuizGame& game){
         std::cout << "\n";
 
         // Display question
-        q->display();
+        q->display_boxed();
 
         // Check if this is a Multiple Choice question (for 50/50)
         MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(q);
@@ -293,11 +293,18 @@ void GameModes::run_quick_attack(QuizGame& game){
     game.filter_by_difficulty(game.selectedDifficulty);
     game.shuffle_questions();
 
-    //Banner 
-    std::cout << "\n" << ColorTheme::BOLD << ColorTheme::CYAN << "⚡ QUICK ATTACK MODE"
-              << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::YELLOW << "You have 5 Minutes! Wrong Answers Cost 15 seconds!"
-              << ColorTheme::RESET << "\n" << std::endl;
+    // Limit to user's chosen question count
+    if (game.filteredQuestions.size() > static_cast<size_t>(game.totalQuestionsToAsk)) {
+        game.filteredQuestions.resize(game.totalQuestionsToAsk);
+    }
+
+    // Show actual question count being used
+    std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
+              << " questions for this mode" << ColorTheme::RESET << std::endl;
+
+    //Banner
+    AsciiArt::display_quick_attack_banner();
+    std::cout << std::endl;
     
     //Start the 5 Minute countdown
     game.globalTimer.start();
@@ -310,13 +317,8 @@ void GameModes::run_quick_attack(QuizGame& game){
             Question* currentQuestion = game.filteredQuestions[game.currentQuestionIndex];
 
             //=== DISPLAY REMAINING TIME ===
-            int remaining = game.globalTimer.get_remaining_seconds();
-            int minutes = remaining / 60;
-            int seconds = remaining % 60;
-
-            std::cout << ColorTheme::BOLD << ColorTheme::YELLOW 
-                      << "⏱️ Time Remaining: " << minutes << "m " << seconds
-                      << "s" << ColorTheme::RESET << std::endl;
+            game.globalTimer.display_progress_bar();
+            std::cout << std::endl;
             
             //Question Header
             ColorTheme::print_question_header(
@@ -325,7 +327,7 @@ void GameModes::run_quick_attack(QuizGame& game){
             );
 
             //Display Question
-            currentQuestion->display();
+            currentQuestion->display_boxed();
 
             //=== GET USER ANSWER ===
             std::string userAnswer;
@@ -439,11 +441,13 @@ void GameModes::run_survival(QuizGame& game){
         game.filteredQuestions.resize(game.totalQuestionsToAsk);
     }
 
+    // Show actual question count being used
+    std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
+              << " questions for this mode" << ColorTheme::RESET << std::endl;
+
     //Banner
-    std::cout << "\n" << ColorTheme::BOLD << ColorTheme::RED << "💀 SURVIVAL MODE 💀"
-                      << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::YELLOW << "You have 3 Lives. Don't lose them all!"
-              << ColorTheme::RESET << "\n" << std::endl;
+    AsciiArt::display_survival_banner();
+    std::cout << std::endl;
 
     //Reset lives to 3
     game.lives.reset();
@@ -464,7 +468,7 @@ void GameModes::run_survival(QuizGame& game){
         );
 
         //Display Question
-        currentQuestion->display();
+        currentQuestion->display_boxed();
 
         //=== START TIMER IF ENABLED ===
         Timer questionTimer(game.questionTimeLimit);
@@ -622,11 +626,14 @@ void GameModes::run_marathon(QuizGame& game){
     game.filter_by_difficulty(game.selectedDifficulty);
     game.shuffle_questions();
 
+    // Note: Marathon is fixed at 300, but limit anyway in case fewer questions available
+    if (game.filteredQuestions.size() > static_cast<size_t>(game.totalQuestionsToAsk)) {
+        game.filteredQuestions.resize(game.totalQuestionsToAsk);
+    }
+
     //Banner
-    std::cout << "\n" << ColorTheme::BOLD << ColorTheme::MAGENTA << "🏃 MARATHON MODE 🏃"
-              << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::YELLOW << "Answer ALL " << game.filteredQuestions.size()
-              << " questions!" << ColorTheme::RESET << "\n" << std::endl;
+    AsciiArt::display_marathon_banner();
+    std::cout << std::endl;
 
     //Start a timer to track total session time
     Timer marathonTimer(0); //No Time limit, just track
@@ -660,7 +667,7 @@ void GameModes::run_marathon(QuizGame& game){
         );
 
         //Display Question
-        currentQuestion->display();
+        currentQuestion->display_boxed();
 
         //=== START TIMER IF ENABLED ===
         Timer questionTimer(game.questionTimeLimit);
@@ -811,6 +818,10 @@ void GameModes::run_lightning(QuizGame& game){
         game.filteredQuestions.resize(game.totalQuestionsToAsk);
     }
 
+    // Show actual question count being used
+    std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
+              << " questions for this mode" << ColorTheme::RESET << std::endl;
+
     //Calculate total score
     game.totalScore = 0;
     for (Question* q : game.filteredQuestions){
@@ -818,10 +829,8 @@ void GameModes::run_lightning(QuizGame& game){
     }
 
     //Banner
-    std::cout << "\n" << ColorTheme::BOLD << ColorTheme::YELLOW << "⚡ LIGHTNING MODE ⚡"
-                      << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::RED << "10 SECONDS PER QUESTION - THINK FAST!" 
-              << ColorTheme::RESET << "\n"  << std::endl;
+    AsciiArt::display_lightning_banner();
+    std::cout << std::endl;
     std::cout << ColorTheme::DIM << "Press Enter to begin..." << ColorTheme::RESET;
     std::cin.get();
 
@@ -843,7 +852,7 @@ void GameModes::run_lightning(QuizGame& game){
         );
 
         //Display Question
-        currentQuestion->display();
+        currentQuestion->display_boxed();
 
         //=== START STRICT TIMER ===
         Timer questionTimer(LIGHTNING_TIME_LIMIT);
@@ -851,6 +860,9 @@ void GameModes::run_lightning(QuizGame& game){
 
         std::cout << ColorTheme::RED << ColorTheme::BOLD << "\n⚡ 10 SECONDS - GO!"
                   << ColorTheme::RESET << std::endl;
+
+        // Note: Can't show animated timer bar because terminal input blocks
+        // The timer DOES work - you'll get "TIME'S UP!" if you take too long
 
         //GET USER ANSWER
         std::string userAnswer;
@@ -980,6 +992,10 @@ void GameModes::run_practice(QuizGame& game){
         game.filteredQuestions.resize(game.totalQuestionsToAsk);
     }
 
+    // Show actual question count being used
+    std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
+              << " questions for this mode" << ColorTheme::RESET << std::endl;
+
     //Calculate total score
     game.totalScore = 0;
     for (Question* q : game.filteredQuestions){
@@ -987,10 +1003,8 @@ void GameModes::run_practice(QuizGame& game){
     }
 
     //Banner
-    std::cout << "\n" << ColorTheme::BOLD << ColorTheme::CYAN << "📚 PRACTICE MODE 📚"
-                     << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::GREEN << "Learn at your own pace! Correct answers will be shown!"
-             << ColorTheme::RESET << "\n" << std::endl;
+    AsciiArt::display_practice_banner();
+    std::cout << std::endl;
 
     std::cout << ColorTheme::DIM << "Press Enter to begin..." << ColorTheme::RESET;
     std::cin.get();
@@ -1014,7 +1028,7 @@ void GameModes::run_practice(QuizGame& game){
         );
 
         //Display Question
-        currentQuestion->display();
+        currentQuestion->display_boxed();
 
         //=== GET USER ANSWER ===
         std::string userAnswer;

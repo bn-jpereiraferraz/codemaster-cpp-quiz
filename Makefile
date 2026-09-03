@@ -13,6 +13,7 @@ SOURCES = main.cpp \
           Lifelines.cpp \
           GlobalTimer.cpp \
           Lives.cpp \
+          AsciiArt.cpp \
           GameModes.cpp \
           QuizGame.cpp
 
@@ -24,6 +25,7 @@ HEADERS = ColorTheme.h \
           Lifelines.h \
           GlobalTimer.h \
           Lives.h \
+          AsciiArt.h \
           GameModes.h \
           QuizGame.h
 

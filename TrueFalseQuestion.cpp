@@ -25,6 +25,37 @@ void TrueFalseQuestion::display() {
     std::cout << "Your answer (T/F): ";
 }
 
+//Display True/False in new formated box
+void TrueFalseQuestion::display_boxed(){
+    //Top
+    std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+
+    //Question text
+    std::cout << "║                                                          ║\n";
+    std::cout << "║  " << questionText;
+
+    //Padding
+    int textLen = questionText.length();
+    int padding = 56 - textLen;
+    for (int i = 0; i < padding; i++){
+        std::cout << " ";
+    }
+    std::cout << "║\n";
+    std::cout << "║                                                          ║\n";
+
+    //Separator
+    std::cout << "╠══════════════════════════════════════════════════════════╣\n";
+
+    //Display True
+    std::cout << "║  TRUE  │ The statement is correct                       ║\n";
+
+    //Display False
+    std::cout << "║  FALSE │ The statement is incorrect                     ║\n";
+
+    //Bottom
+    std::cout << "╚══════════════════════════════════════════════════════════╝\n";
+}
+
 // Check if the user's answer is correct
 bool TrueFalseQuestion::checkAnswer(std::string answer) {
     if (answer.empty()) return false;  // Empty answer is wrong

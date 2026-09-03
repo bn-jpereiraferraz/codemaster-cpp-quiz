@@ -17,6 +17,7 @@ public:
 
     // Pure virtual - children must implement
     virtual void display() = 0;
+    virtual void display_boxed() = 0;
     virtual bool checkAnswer(std::string answer) = 0;
 
     int get_points();

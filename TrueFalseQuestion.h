@@ -16,6 +16,7 @@ public:
     ~TrueFalseQuestion();
 
     void display() override;
+    void display_boxed() override;
     bool checkAnswer(std::string answer) override;
 };
 

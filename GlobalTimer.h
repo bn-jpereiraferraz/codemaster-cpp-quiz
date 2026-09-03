@@ -49,6 +49,8 @@ class GlobalTimer{
         //=== Time Penalties ===
         void apply_penalty(int seconds); //subtract time when wrong
 
+        void display_progress_bar()const;
+
         //=== Time Queries ===
         int get_elapsed_seconds()const; //how many sec have passed
         int get_remaining_seconds()const; //How many sec are left

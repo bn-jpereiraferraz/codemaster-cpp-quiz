@@ -1,8 +1,13 @@
 #include "QuizGame.h"
-  #include "ColorTheme.h"
-  #include <iostream>
+#include "ColorTheme.h"
+#include "AsciiArt.h"
+#include <iostream>
 
   int main() {
+
+    AsciiArt::display_main_logo();
+    std::cout << std::endl;
+    
       QuizGame game;
 
       // Load questions from file

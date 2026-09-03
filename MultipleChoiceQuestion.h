@@ -18,6 +18,7 @@ public:
     ~MultipleChoiceQuestion();
 
     void display() override;
+    void display_boxed() override;
     bool checkAnswer(std::string answer) override;
 
     // Getters for 50/50 lifeline

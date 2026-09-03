@@ -1,6 +1,7 @@
 #include "QuizGame.h"
 #include "GameModes.h"
 #include "ColorTheme.h"
+#include "AsciiArt.h"
 #include "Timer.h"
 #include <iostream>
 #include <fstream>
@@ -255,6 +256,20 @@ void QuizGame::display_achievements(){
                   << ColorTheme::RESET << std::endl;
         return;
     }
+    
+    double accuracy = (questionsAnswered > 0) ?
+                      ((double)correctCount / questionsAnswered * 100.0) : 0.0;
+    std::cout << "\n";
+    if (accuracy >= 100.0 && questionsAnswered >= 5){
+        AsciiArt::display_perfect_victory();
+    }else if (accuracy >= 80.0){   
+        AsciiArt::display_great_victory();
+    }else if (accuracy >= 60.0){
+        AsciiArt::display_good_victory();
+    }else {
+        AsciiArt::display_game_over();
+    }
+    
 
     std::cout << "\n" << ColorTheme::YELLOW << ColorTheme::BOLD;
     std::cout << "🏆 ACHIEVEMENTS: " << ColorTheme::RESET << std::endl;
@@ -771,8 +786,14 @@ void QuizGame::show_game_mode_menu(){
        std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
        std::cout << "    " << ColorTheme::GREEN << "📚 Practice Mode: No timer (learn at your pace)"
                  << ColorTheme::RESET << std::endl;
+   } else if (currentGameMode == MARATHON) {
+       // Marathon: No per-question timer (tracks total session time instead)
+       disable_timer();
+       std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
+       std::cout << "    " << ColorTheme::MAGENTA << "🏃 Marathon Mode: Tracks total session time (no per-question limit)"
+                 << ColorTheme::RESET << std::endl;
    } else {
-       // Classic, Marathon, Survival: User can choose
+       // Classic, Survival: User can choose
        std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
        std::cout << "    " << ColorTheme::GREEN << "1" << ColorTheme::RESET << " - No Timer (Practice)\n";
        std::cout << "    " << ColorTheme::YELLOW << "2" << ColorTheme::RESET << " - 60 seconds per question\n";

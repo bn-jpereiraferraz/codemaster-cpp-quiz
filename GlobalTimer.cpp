@@ -1,4 +1,7 @@
 #include "GlobalTimer.h"
+#include"ColorTheme.h"
+#include <string>
+#include <iostream>
 
 //===========
 //CONSTRUCTOR
@@ -97,4 +100,53 @@ bool GlobalTimer::is_time_up()const{
 //RETURNS: true if counting down, false if paused
 bool GlobalTimer::is_running()const{
     return running;
+}
+
+void GlobalTimer::display_progress_bar()const {
+    int remaining = get_remaining_seconds();
+
+    //Calculate percentage like in Time.cpp
+    double percentRemaining = ((double)remaining / totalSeconds) * 100.0;
+
+    //Choose color based on percentage
+    std::string color;
+    if (percentRemaining > 50.0){
+        color = ColorTheme::GREEN;
+    }else if(percentRemaining > 25.0){
+        color = ColorTheme::YELLOW;
+    }else{
+        color = ColorTheme::RED;
+    }
+
+    //Bar Width
+    int totalBlocks = 30;
+    int filledBlocks = (int)((percentRemaining / 100.0) * totalBlocks);
+    int emptyBlocks = totalBlocks - filledBlocks;
+
+    //Convert remainning seconds to format minutes:seconds
+    int minutes = remaining / 60;
+    int seconds = remaining % 60;
+
+    //Display bar
+    std::cout << color << ColorTheme::BOLD << "⏱️  COUNTDOWN: [";
+
+    //Filled Blocks
+    for (int i = 0; i < filledBlocks; i++){
+        std::cout << "█";
+    }
+
+    //Empty blocks
+    for (int i = 0; i < emptyBlocks; i++){
+        std::cout << "░";
+    }
+
+    //Show remaining time in MM:SS
+    std::cout << "] ";
+    if (minutes > 0){
+        std::cout << minutes << "m " << seconds <<"s";
+
+    }else{
+        std::cout << seconds << "s"; 
+    }
+    std::cout << " left" << ColorTheme::RESET << std::endl;
 }

@@ -21,6 +21,7 @@ public:
     int get_elapsed_seconds() const;   // Time used so far
     int get_remaining_seconds() const; // Time left
     bool is_time_up() const;           // Check if expired
+    void display_progress_bar()const; //Countdown bar
     bool is_running() const;           // Check if active
 };
 
