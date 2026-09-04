@@ -1,4 +1,5 @@
 #include "TrueFalseQuestion.h"
+#include "ColorTheme.h"
 #include <iostream>
 #include <cctype>
 
@@ -8,9 +9,14 @@
 
 // Constructor - calls parent constructor, then initializes child members
 TrueFalseQuestion::TrueFalseQuestion(std::string text, int pts, bool correct)
-    : Question(text, pts),      // Call parent constructor
+    : Question(text, pts, "General"),      // Call parent constructor
       correctAnswer(correct) {  // Initialize correct answer
     // Constructor body (empty)
+}
+
+TrueFalseQuestion::TrueFalseQuestion(std::string text, int pts, bool correct, std::string cat)
+    : Question(text, pts, cat), correctAnswer(correct){
+
 }
 
 // Destructor
@@ -31,7 +37,14 @@ void TrueFalseQuestion::display_boxed(){
     std::cout << "╔══════════════════════════════════════════════════════════╗\n";
 
     //Question text
-    std::cout << "║                                                          ║\n";
+    std::cout << "║  📁 " << ColorTheme::CYAN << category << ColorTheme::RESET;
+    int catLen = category.length();
+    int catPadding = 52 - catLen;
+    for (int i = 0; i < catPadding; i++){
+        std::cout << " ";
+    }
+    std::cout << " ║\n";
+
     std::cout << "║  " << questionText;
 
     //Padding
@@ -47,10 +60,10 @@ void TrueFalseQuestion::display_boxed(){
     std::cout << "╠══════════════════════════════════════════════════════════╣\n";
 
     //Display True
-    std::cout << "║  TRUE  │ The statement is correct                       ║\n";
+    std::cout << "║  TRUE  │ The statement is correct                        ║\n";
 
     //Display False
-    std::cout << "║  FALSE │ The statement is incorrect                     ║\n";
+    std::cout << "║  FALSE │ The statement is incorrect                      ║\n";
 
     //Bottom
     std::cout << "╚══════════════════════════════════════════════════════════╝\n";

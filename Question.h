@@ -10,9 +10,11 @@ class Question {
 protected:
     std::string questionText;
     int points;
+    std::string category;
 
 public:
     Question(std::string text, int pts);
+    Question(std::string text, int pts, std::string cat);
     virtual ~Question();  // Virtual for proper inheritance cleanup
 
     // Pure virtual - children must implement
@@ -21,6 +23,7 @@ public:
     virtual bool checkAnswer(std::string answer) = 0;
 
     int get_points();
+    std::string get_category();
 };
 
 #endif

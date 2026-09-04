@@ -1,4 +1,5 @@
 #include "MultipleChoiceQuestion.h"
+#include "ColorTheme.h"
 #include <iostream>
 #include <cctype>
 
@@ -8,10 +9,15 @@
 
 // Constructor - calls parent constructor, then initializes child members
 MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct)
-    : Question(text, pts),      // Call parent constructor first
+    : Question(text, pts, "General"),      // Call parent constructor first
       options(opts),            // Initialize options vector
       correctAnswer(correct) {  // Initialize correctAnswer
     // Constructor body (empty - initializer list did everything)
+}
+
+MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat)
+    : Question(text, pts, cat), options(opts), correctAnswer(correct){
+
 }
 
 // Destructor
@@ -38,7 +44,15 @@ void MultipleChoiceQuestion::display_boxed() {
     std::cout << "╔══════════════════════════════════════════════════════════╗\n";
 
     //Question section
-    std::cout << "║                                                          ║\n";
+    std::cout << "║  📁 " << ColorTheme::CYAN << category << ColorTheme::RESET;
+    int catLen = category.length();
+    int catPadding = 52 - catLen;
+    for (int i = 0; i < catPadding; i++)
+    {
+        std::cout << " ";
+    }
+    std::cout << " ║\n";
+
     std::cout << "║  " << questionText;
 
     //Padding to align the closing border

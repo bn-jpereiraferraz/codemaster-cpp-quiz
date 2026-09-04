@@ -13,6 +13,7 @@ private:
 
 public:
     TrueFalseQuestion(std::string text, int pts, bool correct);
+    TrueFalseQuestion(std::string text, int pts, bool correct, std::string cat);
     ~TrueFalseQuestion();
 
     void display() override;

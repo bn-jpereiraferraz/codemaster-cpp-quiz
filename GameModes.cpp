@@ -302,6 +302,12 @@ void GameModes::run_quick_attack(QuizGame& game){
     std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
               << " questions for this mode" << ColorTheme::RESET << std::endl;
 
+    // Calculate total possible score
+    game.totalScore = 0;
+    for (Question* q : game.filteredQuestions) {
+        game.totalScore += q->get_points();
+    }
+
     //Banner
     AsciiArt::display_quick_attack_banner();
     std::cout << std::endl;
@@ -444,6 +450,12 @@ void GameModes::run_survival(QuizGame& game){
     // Show actual question count being used
     std::cout << ColorTheme::CYAN << "📝 Using " << game.filteredQuestions.size()
               << " questions for this mode" << ColorTheme::RESET << std::endl;
+
+    // Calculate total possible score
+    game.totalScore = 0;
+    for (Question* q : game.filteredQuestions) {
+        game.totalScore += q->get_points();
+    }
 
     //Banner
     AsciiArt::display_survival_banner();

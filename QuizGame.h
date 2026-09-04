@@ -52,6 +52,7 @@ private:
     void shuffle_questions();                         // Randomize order
     int calculate_bonus_points(int basePoints, int secondsUsed, int timeLimit);  // Speed bonus
     void filter_by_difficulty(Difficulty diff);       // Keep only matching difficulty
+    void filter_by_category(std::string category);    //Filter by category
     void apply_fifty_fifty(MultipleChoiceQuestion* mcq);  // Remove 2 wrong answers
 
     //=== QUESTIONS ===

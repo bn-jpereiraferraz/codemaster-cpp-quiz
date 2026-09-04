@@ -322,27 +322,32 @@ Question* QuizGame::parse_question_line(std::string line){
 
     //Parse multiple Choice questions
     if (type == "MC"){
-        //Example: MC | What is X?|10| o1,o2,o3,o4 | A
-        //              ^          ^  ^             ^
-        //            firstPipe   po2 pos4         pos6
+        //Example: MC|OOP|What is X?|10|o1,o2,o3,o4|A
+        //              ^   ^        ^  ^           ^
+        //         firstPipe pos2   pos4 pos6      pos8
 
-        //Extract question text(between 1st and 2nd Pipe)
+        //Extract category (between 1st and 2nd Pipe)
         size_t pos1 = firstPipe + 1; //Start after first'|'
         size_t pos2 = line.find('|', pos1); //Find next
-        std::string questionText = line.substr(pos1, pos2 - pos1);
+        std::string category = line.substr(pos1, pos2 - pos1);
 
-        //Extract points (between 2 and 3 Pipe)
+        //Extract question text (between 2nd and 3rd Pipe)
         size_t pos3 = pos2 + 1;
         size_t pos4 = line.find('|', pos3);
-        int points = std::stoi(line.substr(pos3, pos4 - pos3)); //s|to|i string to int
+        std::string questionText = line.substr(pos3, pos4 - pos3);
 
-        //Extract options string (between 3rd and 4th pipe )
+        //Extract points (between 3rd and 4th Pipe)
         size_t pos5 = pos4 + 1;
         size_t pos6 = line.find('|', pos5);
-        std::string optionsStr = line.substr(pos5, pos6 - pos5);
+        int points = std::stoi(line.substr(pos5, pos6 - pos5)); //s|to|i string to int
 
-        //Extract correct answer (everything after 4th pipe)
-        std::string answer = line.substr(pos6 + 1);
+        //Extract options string (between 4th and 5th pipe)
+        size_t pos7 = pos6 + 1;
+        size_t pos8 = line.find('|', pos7);
+        std::string optionsStr = line.substr(pos7, pos8 - pos7);
+
+        //Extract correct answer (everything after 5th pipe)
+        std::string answer = line.substr(pos8 + 1);
         char correctAnswer = answer[0]; //First character is the answer;
 
         //Parse comma-seperated options into a vector
@@ -358,32 +363,40 @@ Question* QuizGame::parse_question_line(std::string line){
             start = comma + 1;
             comma = optionsStr.find(',', start); //find next comma
         }
-        //add last option 
+        //add last option
         options.push_back(optionsStr.substr(start));
 
-        //Create and return new MultipleChoiceQuestion object
-        return new MultipleChoiceQuestion(questionText, points, options, correctAnswer);
+        //Create and return new MultipleChoiceQuestion object WITH CATEGORY
+        return new MultipleChoiceQuestion(questionText, points, options, correctAnswer, category);
     }
     else if(type == "TF"){
         //Parse True/False Questions
+        //Example: TF|Basics|C++ is case-sensitive|5|true
+        //             ^      ^                   ^ ^
+        //        firstPipe  pos2               pos4 pos6
 
-        //Extract question text
+        //Extract category (between 1st and 2nd Pipe)
         size_t pos1 = firstPipe + 1;
         size_t pos2 = line.find('|', pos1);
-        std::string questionText = line.substr(pos1, pos2 - pos1);
+        std::string category = line.substr(pos1, pos2 - pos1);
 
-        //Extract Points
+        //Extract question text (between 2nd and 3rd Pipe)
         size_t pos3 = pos2 + 1;
         size_t pos4 = line.find('|', pos3);
-        int points = std::stoi(line.substr(pos3, pos4 - pos3));
+        std::string questionText = line.substr(pos3, pos4 - pos3);
 
-        //Extract Answer (true or false)
-        std::string answerStr = line.substr(pos4 + 1);
-        //Convert string to bool 
+        //Extract Points (between 3rd and 4th Pipe)
+        size_t pos5 = pos4 + 1;
+        size_t pos6 = line.find('|', pos5);
+        int points = std::stoi(line.substr(pos5, pos6 - pos5));
+
+        //Extract Answer (everything after 4th pipe)
+        std::string answerStr = line.substr(pos6 + 1);
+        //Convert string to bool
         bool correctAnswer = (answerStr == "true" || answerStr == "True" || answerStr == "TRUE");
 
-        //Create and return new TrueFalseQuestion object
-        return new TrueFalseQuestion(questionText, points, correctAnswer);
+        //Create and return new TrueFalseQuestion object WITH CATEGORY
+        return new TrueFalseQuestion(questionText, points, correctAnswer, category);
     }
     return nullptr; //Unknown question type
 }
@@ -467,6 +480,27 @@ void QuizGame::filter_by_difficulty(Difficulty diff){
 
     std::cout <<")" << ColorTheme::RESET << std::endl;
 }
+
+void QuizGame::filter_by_category(std::string category){
+    if (category == "All"){
+        std::cout << ColorTheme::CYAN << "📁 Using all categories"
+            << ColorTheme::RESET << std::endl;
+            return;
+    }
+
+    std::vector<Question*> categoryFiltered;
+    for(Question* q : filteredQuestions){
+        if (q->get_category() == category){
+            categoryFiltered.push_back(q);
+        }
+    }
+
+    filteredQuestions = categoryFiltered;
+
+    std::cout << ColorTheme::CYAN << "📁 Filtered to " << filteredQuestions.size()
+        << " questions in category: " << category << ColorTheme::RESET << std::endl;
+}
+
 
 //Calculate bonus points for fast answers
 int QuizGame::calculate_bonus_points(int basePoints, int secondsUsed, int timeLimit){
@@ -767,11 +801,62 @@ void QuizGame::show_game_mode_menu(){
         default: set_difficulty(MIXED); break;
     }
 
-   // 3. Timer - Skip for modes with fixed timing
+   // 3. Category Filter
+   std::cout << ColorTheme::CYAN << "\n[3] Category Filter" << ColorTheme::RESET << std::endl;
+   std::cout << "    " << ColorTheme::GREEN << "1" << ColorTheme::RESET << " - All Categories (Mixed)\n";
+   std::cout << "    " << ColorTheme::CYAN << "2" << ColorTheme::RESET << " - Basics\n";
+   std::cout << "    " << ColorTheme::CYAN << "3" << ColorTheme::RESET << " - OOP (Object-Oriented)\n";
+   std::cout << "    " << ColorTheme::CYAN << "4" << ColorTheme::RESET << " - Pointers & Memory\n";
+   std::cout << "    " << ColorTheme::CYAN << "5" << ColorTheme::RESET << " - STL & Algorithms\n";
+   std::cout << "    " << ColorTheme::CYAN << "6" << ColorTheme::RESET << " - Templates\n";
+   std::cout << "    " << ColorTheme::CYAN << "7" << ColorTheme::RESET << " - Modern C++ (C++11+)\n";
+   std::cout << ColorTheme::YELLOW << "    Your choice: " << ColorTheme::RESET;
+
+   int categoryChoice;
+   std::cin >> categoryChoice;
+   std::cin.ignore();
+
+   switch(categoryChoice) {
+       case 1: filter_by_category("All"); break;
+       case 2: filter_by_category("Basics"); break;
+       case 3: filter_by_category("OOP"); break;
+       case 4: {
+           // Combine Pointers and Memory Management
+           std::vector<Question*> combined;
+           for (Question* q : filteredQuestions) {
+               if (q->get_category() == "Pointers" || q->get_category() == "Memory Management") {
+                   combined.push_back(q);
+               }
+           }
+           filteredQuestions = combined;
+           std::cout << ColorTheme::CYAN << "📁 Filtered to " << filteredQuestions.size()
+                     << " questions (Pointers + Memory)" << ColorTheme::RESET << std::endl;
+           break;
+       }
+       case 5: filter_by_category("STL"); break;
+       case 6: filter_by_category("Templates"); break;
+       case 7: {
+           // Combine Modern C++ categories
+           std::vector<Question*> combined;
+           for (Question* q : filteredQuestions) {
+               if (q->get_category() == "Modern C++" || q->get_category() == "Lambdas" ||
+                   q->get_category() == "Smart Pointers" || q->get_category() == "Move Semantics") {
+                   combined.push_back(q);
+               }
+           }
+           filteredQuestions = combined;
+           std::cout << ColorTheme::CYAN << "📁 Filtered to " << filteredQuestions.size()
+                     << " questions (Modern C++ features)" << ColorTheme::RESET << std::endl;
+           break;
+       }
+       default: filter_by_category("All"); break;
+   }
+
+   // 4. Timer - Skip for modes with fixed timing
    if (currentGameMode == LIGHTNING) {
        // Lightning: Fixed 10 seconds per question
        enable_timer(10);
-       std::cout << ColorTheme::CYAN << "\n[3] Timer Mode" << ColorTheme::RESET << std::endl;
+       std::cout << ColorTheme::CYAN << "\n[4] Timer Mode" << ColorTheme::RESET << std::endl;
        std::cout << "    " << ColorTheme::YELLOW << "⚡ Lightning Mode: 10 seconds per question (FIXED)"
                  << ColorTheme::RESET << std::endl;
    } else if (currentGameMode == QUICK_ATTACK) {
@@ -814,11 +899,11 @@ void QuizGame::show_game_mode_menu(){
        }
    }
 
-    // 4. Lifelines - Skip for modes where they don't make sense
+    // 5. Lifelines - Skip for modes where they don't make sense
     if (currentGameMode == PRACTICE) {
         // Practice: No pressure = no need for lifelines
         disable_lifelines();
-        std::cout << ColorTheme::CYAN << "\n[4] Lifelines" << ColorTheme::RESET << std::endl;
+        std::cout << ColorTheme::CYAN << "\n[5] Lifelines" << ColorTheme::RESET << std::endl;
         std::cout << "    " << ColorTheme::GREEN << "📚 Practice Mode: Lifelines disabled (you'll see correct answers anyway)"
                   << ColorTheme::RESET << std::endl;
     } else if (currentGameMode == QUICK_ATTACK) {

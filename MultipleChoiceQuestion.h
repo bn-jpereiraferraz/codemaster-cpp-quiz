@@ -15,6 +15,7 @@ private:
 
 public:
     MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct);
+    MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat);
     ~MultipleChoiceQuestion();
 
     void display() override;

@@ -1,364 +1,364 @@
 # CodeMaster C++ Quiz Questions
-# Format: TYPE|Question|Points|Data
-# MC (Multiple Choice): MC|question|points|optionA,optionB,optionC,optionD|CorrectAnswer
-# TF (True/False): TF|question|points|true/false
+# NEW Format with Categories: TYPE|CATEGORY|Question|Points|Data
+# MC (Multiple Choice): MC|Category|question|points|optionA,optionB,optionC,optionD|CorrectAnswer
+# TF (True/False): TF|Category|question|points|true/false
 
 # ===== BASICS & SYNTAX =====
-MC|What is the correct way to declare a variable in C++?|5|int x;,integer x;,var x;,x as int;|A
-MC|Which symbol is used for single-line comments in C++?|5|#,//,/*,--|B
-TF|C++ is case-sensitive|5|true
-MC|What is the entry point of a C++ program?|5|start(),begin(),main(),run()|C
-TF|Every C++ statement must end with a semicolon|5|true
-MC|Which header file is needed for cout?|5|<stdio.h>,<iostream>,<conio.h>,<stream>|B
-MC|What does endl do?|5|Ends program,Ends loop,Ends line and flushes buffer,Ends function|C
-TF|C++ supports both procedural and object-oriented programming|5|true
-MC|Which operator is used for string concatenation in C++?|5|&,+,.,%|B
-MC|What is the size of an int typically on a 32-bit system?|10|2 bytes,4 bytes,8 bytes,16 bytes|B
+MC|Basics|What is the correct way to declare a variable in C++?|5|int x;,integer x;,var x;,x as int;|A
+MC|Basics|Which symbol is used for single-line comments in C++?|5|#,//,/*,--|B
+TF|Basics|C++ is case-sensitive|5|true
+MC|Basics|What is the entry point of a C++ program?|5|start(),begin(),main(),run()|C
+TF|Basics|Every C++ statement must end with a semicolon|5|true
+MC|Basics|Which header file is needed for cout?|5|<stdio.h>,<iostream>,<conio.h>,<stream>|B
+MC|Basics|What does endl do?|5|Ends program,Ends loop,Ends line and flushes buffer,Ends function|C
+TF|Basics|C++ supports both procedural and object-oriented programming|5|true
+MC|Basics|Which operator is used for string concatenation in C++?|5|&,+,.,%|B
+MC|Data Types|What is the size of an int typically on a 32-bit system?|10|2 bytes,4 bytes,8 bytes,16 bytes|B
 
 # ===== DATA TYPES =====
-MC|Which is NOT a primitive data type in C++?|5|int,float,string,char|C
-TF|bool can only store true or false|5|true
-MC|What is the range of char data type?|10|-128 to 127,-256 to 255,0 to 255,Depends on compiler|A
-MC|Which keyword is used for type conversion?|5|convert,cast,static_cast,typeof|C
-TF|double has more precision than float|5|true
-MC|What does auto keyword do in modern C++?|10|Automatic variables,Type inference,Auto increment,Automatic memory management|B
-MC|Which is the correct way to declare a constant?|5|constant int x = 5;,const int x = 5;,int const x = 5;,Both B and C|D
-TF|unsigned int can store negative values|5|false
-MC|What is the size of bool in C++?|10|1 bit,1 byte,4 bytes,Compiler dependent|B
-MC|Which type is used for large integers?|10|int,long,long long,bigint|C
+MC|Data Types|Which is NOT a primitive data type in C++?|5|int,float,string,char|C
+TF|Data Types|bool can only store true or false|5|true
+MC|Data Types|What is the range of char data type?|10|-128 to 127,-256 to 255,0 to 255,Depends on compiler|A
+MC|Data Types|Which keyword is used for type conversion?|5|convert,cast,static_cast,typeof|C
+TF|Data Types|double has more precision than float|5|true
+MC|Data Types|What does auto keyword do in modern C++?|10|Automatic variables,Type inference,Auto increment,Automatic memory management|B
+MC|Data Types|Which is the correct way to declare a constant?|5|constant int x = 5;,const int x = 5;,int const x = 5;,Both B and C|D
+TF|Data Types|unsigned int can store negative values|5|false
+MC|Data Types|What is the size of bool in C++?|10|1 bit,1 byte,4 bytes,Compiler dependent|B
+MC|Data Types|Which type is used for large integers?|10|int,long,long long,bigint|C
 
 # ===== OPERATORS =====
-MC|What does the % operator do?|5|Division,Modulus,Percentage,Multiplication|B
-TF|The ++ operator increments a value by 1|5|true
-MC|What is the result of 5 / 2 in C++?|10|2.5,2,3,Error|B
-MC|Which operator has the highest precedence?|10|+,-,*,Parentheses ()|D
-TF|&& is the logical AND operator|5|true
-MC|What does the ternary operator look like?|10|if ? then : else,condition ? true : false,? condition : result,condition then value|B
-MC|Which operator is used for pointer dereferencing?|10|&,*,->,.:|B
-TF|The == operator is used for assignment|5|false
-MC|What does the sizeof operator return?|10|Value of variable,Size in bytes,Type of variable,Address of variable|B
-MC|Which operator cannot be overloaded in C++?|15|+,-,::,*|C
+MC|Operators|What does the % operator do?|5|Division,Modulus,Percentage,Multiplication|B
+TF|Operators|The ++ operator increments a value by 1|5|true
+MC|Operators|What is the result of 5 / 2 in C++?|10|2.5,2,3,Error|B
+MC|Operators|Which operator has the highest precedence?|10|+,-,*,Parentheses ()|D
+TF|Operators|&& is the logical AND operator|5|true
+MC|Operators|What does the ternary operator look like?|10|if ? then : else,condition ? true : false,? condition : result,condition then value|B
+MC|Pointers|What does the * operator do with pointers?|10|Creates pointer,Dereferences pointer,Gets address,Multiplies|B
+TF|Operators|The == operator is used for assignment|5|false
+MC|Operators|What does the sizeof operator return?|10|Value of variable,Size in bytes,Type of variable,Address of variable|B
+MC|Operators|Which operator cannot be overloaded in C++?|15|+,-,::,*|C
 
 # ===== CONTROL STRUCTURES =====
-MC|Which is the correct syntax for an if statement?|5|if x > 5 then,if (x > 5),if x > 5:,if [x > 5]|B
-TF|else if can be written as elif in C++|5|false
-MC|What does break do in a loop?|5|Pauses loop,Exits loop,Skips iteration,Restarts loop|B
-MC|What does continue do in a loop?|5|Exits loop,Skips to next iteration,Pauses loop,Ends program|B
-TF|A switch statement can work with strings in modern C++|10|false
-MC|Which loop is guaranteed to execute at least once?|10|for,while,do-while,foreach|C
-MC|What is an infinite loop syntax with for?|10|for(;;),for(true),for(1),for(infinity)|A
-TF|You can have multiple conditions in a for loop|10|true
-MC|What keyword is used to exit a switch case?|5|exit,stop,break,return|C
-MC|Which loop is best when you don't know iteration count?|10|for,while,do-while,All are equal|B
+MC|Control Flow|Which is the correct syntax for an if statement?|5|if x > 5 then,if (x > 5),if x > 5:,if [x > 5]|B
+TF|Control Flow|else if can be written as elif in C++|5|false
+MC|Control Flow|What does break do in a loop?|5|Pauses loop,Exits loop,Skips iteration,Restarts loop|B
+MC|Control Flow|What does continue do in a loop?|5|Exits loop,Skips to next iteration,Pauses loop,Ends program|B
+TF|Control Flow|A switch statement can work with strings in modern C++|10|false
+MC|Control Flow|Which loop is guaranteed to execute at least once?|10|for,while,do-while,foreach|C
+MC|Control Flow|What is an infinite loop syntax with for?|10|for(;;),for(true),for(1),for(infinity)|A
+TF|Control Flow|You can have multiple conditions in a for loop|10|true
+MC|Control Flow|What keyword is used to exit a switch case?|5|exit,stop,break,return|C
+MC|Control Flow|Which loop is best when you don't know iteration count?|10|for,while,do-while,All are equal|B
 
 # ===== FUNCTIONS =====
-MC|What is the correct syntax for a function?|5|function int add(),int add(),def add(),fun add()|B
-TF|A function must always return a value|5|false
-MC|What keyword indicates no return value?|5|null,nothing,void,empty|C
-MC|What is function overloading?|10|Multiple functions with same name,Calling functions multiple times,Functions calling themselves,Using too many functions|A
-TF|You can have default parameter values in C++|10|true
-MC|What is recursion?|10|Loop inside function,Function calling itself,Multiple function calls,Function returning function|B
-MC|How do you pass by reference?|10|int &x,int *x,int x&,ref int x|A
-TF|Pass by reference allows modifying the original variable|10|true
-MC|What does inline keyword suggest to compiler?|15|Make function faster,Replace function call with function body,Make function public,Make function recursive|B
-MC|What is the return type of main()?|5|void,int,char,any|B
+MC|Functions|What is the correct syntax for a function?|5|function int add(),int add(),def add(),fun add()|B
+TF|Functions|A function must always return a value|5|false
+MC|Functions|What keyword indicates no return value?|5|null,nothing,void,empty|C
+MC|Functions|What is function overloading?|10|Multiple functions with same name,Calling functions multiple times,Functions calling themselves,Using too many functions|A
+TF|Functions|You can have default parameter values in C++|10|true
+MC|Functions|What is recursion?|10|Loop inside function,Function calling itself,Multiple function calls,Function returning function|B
+MC|Functions|How do you pass by reference?|10|int &x,int *x,int x&,ref int x|A
+TF|Functions|Pass by reference allows modifying the original variable|10|true
+MC|Functions|What does inline keyword suggest to compiler?|15|Make function faster,Replace function call with function body,Make function public,Make function recursive|B
+MC|Functions|What is the return type of main()?|5|void,int,char,any|B
 
 # ===== POINTERS & REFERENCES =====
-MC|What does the & operator do with variables?|10|Gets value,Gets address,Creates reference,Deletes variable|B
-MC|What does the * operator do with pointers?|10|Creates pointer,Dereferences pointer,Gets address,Multiplies|B
-TF|A pointer stores a memory address|10|true
-MC|What is a NULL pointer?|10|Pointer to zero,Pointer to nothing,Invalid pointer,All of the above|D
-TF|You can have a reference to a reference in C++|10|false
-MC|What is the correct way to declare a pointer?|5|int *ptr;,int ptr*;,pointer int ptr;,int &ptr;|A
-MC|What does -> operator do?|10|Greater than,Access member through pointer,Create pointer,Assign pointer|B
-MC|What is a dangling pointer?|15|Null pointer,Pointer to deallocated memory,Uninitialized pointer,All of the above|B
-TF|References must be initialized when declared|10|true
-MC|What does the keyword this represent in a class?|10|Current object,Current class,Current function,Current pointer|A
+MC|Pointers|What does the & operator do with variables?|10|Gets value,Gets address,Creates reference,Deletes variable|B
+MC|Pointers|What does the * operator do with pointers?|10|Creates pointer,Dereferences pointer,Gets address,Multiplies|B
+TF|Pointers|A pointer stores a memory address|10|true
+MC|Pointers|What is a NULL pointer?|10|Pointer to zero,Pointer to nothing,Invalid pointer,All of the above|D
+TF|Pointers|You can have a reference to a reference in C++|10|false
+MC|Pointers|What is the correct way to declare a pointer?|5|int *ptr;,int ptr*;,pointer int ptr;,int &ptr;|A
+MC|Pointers|What does -> operator do?|10|Greater than,Access member through pointer,Create pointer,Assign pointer|B
+MC|Pointers|What is a dangling pointer?|15|Null pointer,Pointer to deallocated memory,Uninitialized pointer,All of the above|B
+TF|Pointers|References must be initialized when declared|10|true
+MC|OOP|What does the keyword this represent in a class?|10|Current object,Current class,Current function,Current pointer|A
 
 # ===== MEMORY MANAGEMENT =====
-MC|Which operator allocates memory dynamically?|10|malloc,alloc,new,create|C
-MC|Which operator deallocates memory in C++?|10|free,delete,remove,dealloc|B
-TF|Memory allocated with new must be freed with delete|10|true
-MC|What is a memory leak?|10|Memory overflow,Unreleased dynamic memory,Stack overflow,Null pointer|B
-TF|Stack memory is automatically managed|10|true
-MC|Which is allocated on the heap?|10|Local variables,Static variables,new allocated memory,Function parameters|C
-MC|What does delete[] do?|10|Delete array,Delete multiple pointers,Delete all memory,Delete file|A
-TF|You should check if new succeeded before using the pointer|15|true
-MC|What is RAII principle?|15|Resource Acquisition Is Initialization,Random Access Is Important,Recursive Algorithm Is Inefficient,None of these|A
-MC|Which smart pointer owns the object exclusively?|15|shared_ptr,unique_ptr,weak_ptr,auto_ptr|B
+MC|Memory Management|Which operator allocates memory dynamically?|10|malloc,alloc,new,create|C
+MC|Memory Management|Which operator deallocates memory in C++?|10|free,delete,remove,dealloc|B
+TF|Memory Management|Memory allocated with new must be freed with delete|10|true
+MC|Memory Management|What is a memory leak?|10|Memory overflow,Unreleased dynamic memory,Stack overflow,Null pointer|B
+TF|Memory Management|Stack memory is automatically managed|10|true
+MC|Memory Management|Which is allocated on the heap?|10|Local variables,Static variables,new allocated memory,Function parameters|C
+MC|Memory Management|What does delete[] do?|10|Delete array,Delete multiple pointers,Delete all memory,Delete file|A
+TF|Memory Management|You should check if new succeeded before using the pointer|15|true
+MC|Memory Management|What is RAII principle?|15|Resource Acquisition Is Initialization,Random Access Is Important,Recursive Algorithm Is Inefficient,None of these|A
+MC|Smart Pointers|Which smart pointer owns the object exclusively?|15|shared_ptr,unique_ptr,weak_ptr,auto_ptr|B
 
 # ===== OBJECT-ORIENTED PROGRAMMING =====
-MC|What is encapsulation?|10|Hiding implementation details,Inheriting properties,Creating objects,Multiple forms|A
-MC|Which keyword creates a class?|5|object,class,struct,type|B
-TF|A class is a blueprint for objects|10|true
-MC|What is the default access modifier in a class?|10|public,private,protected,none|B
-MC|What does the constructor do?|10|Destroys object,Initializes object,Copies object,Compares objects|B
-TF|A class can have multiple constructors|10|true
-MC|What is the destructor symbol?|10|!,~,@,#|B
-TF|Destructors can take parameters|10|false
-MC|What is the this pointer?|10|Pointer to current object,Pointer to parent class,Pointer to heap,Pointer to stack|A
-MC|Which access modifier allows child class access but not outside?|10|public,private,protected,friend|C
+MC|OOP|What is encapsulation?|10|Hiding implementation details,Inheriting properties,Creating objects,Multiple forms|A
+MC|OOP|Which keyword creates a class?|5|object,class,struct,type|B
+TF|OOP|A class is a blueprint for objects|10|true
+MC|OOP|What is the default access modifier in a class?|10|public,private,protected,none|B
+MC|OOP|What does the constructor do?|10|Destroys object,Initializes object,Copies object,Compares objects|B
+TF|OOP|A class can have multiple constructors|10|true
+MC|OOP|What is the destructor symbol?|10|!,~,@,#|B
+TF|OOP|Destructors can take parameters|10|false
+MC|OOP|What is the this pointer?|10|Pointer to current object,Pointer to parent class,Pointer to heap,Pointer to stack|A
+MC|OOP|Which access modifier allows child class access but not outside?|10|public,private,protected,friend|C
 
 # ===== INHERITANCE =====
-MC|Which keyword is used for inheritance?|10|extends,inherits,public,derive|C
-TF|C++ supports multiple inheritance|10|true
-MC|What is the syntax for public inheritance?|10|class Child : public Parent,class Child extends Parent,class Child inherits Parent,class Child <- Parent|A
-MC|What type of inheritance forms a tree structure?|10|Single,Multiple,Multilevel,Hierarchical|D
-TF|Private members of base class are accessible in derived class|10|false
-MC|What is protected access modifier for?|10|Complete restriction,Child class access,Public access,Friend access|B
-TF|A derived class inherits constructors from base class automatically|15|false
-MC|What does virtual keyword enable?|15|Virtual memory,Runtime polymorphism,Virtual functions,Virtual classes|C
-MC|What is method overriding?|10|Redefining base class method in derived class,Having multiple methods with same name,Calling parent method,Deleting inherited method|A
-MC|Which inheritance has diamond problem?|15|Single,Multiple,Multilevel,Hierarchical|B
+MC|Inheritance|Which keyword is used for inheritance?|10|extends,inherits,public,derive|C
+TF|Inheritance|C++ supports multiple inheritance|10|true
+MC|Inheritance|What is the syntax for public inheritance?|10|class Child : public Parent,class Child extends Parent,class Child inherits Parent,class Child <- Parent|A
+MC|Inheritance|What type of inheritance forms a tree structure?|10|Single,Multiple,Multilevel,Hierarchical|D
+TF|Inheritance|Private members of base class are accessible in derived class|10|false
+MC|Inheritance|What is protected access modifier for?|10|Complete restriction,Child class access,Public access,Friend access|B
+TF|Inheritance|A derived class inherits constructors from base class automatically|15|false
+MC|Inheritance|What does virtual keyword enable?|15|Virtual memory,Runtime polymorphism,Virtual functions,Virtual classes|C
+MC|Inheritance|What is method overriding?|10|Redefining base class method in derived class,Having multiple methods with same name,Calling parent method,Deleting inherited method|A
+MC|Inheritance|Which inheritance has diamond problem?|15|Single,Multiple,Multilevel,Hierarchical|B
 
 # ===== POLYMORPHISM =====
-TF|Polymorphism means many forms|10|true
-MC|What is compile-time polymorphism?|15|Virtual functions,Function overloading,Inheritance,Dynamic binding|B
-MC|What is runtime polymorphism achieved through?|15|Templates,Virtual functions,Overloading,Macros|B
-MC|What does the virtual keyword do?|10|Makes function virtual,Enables dynamic binding,Allows overriding,All of the above|D
-TF|Pure virtual functions are declared with = 0|10|true
-MC|What is an abstract class?|15|Class with no objects,Class with pure virtual function,Class with only virtual functions,Class with private constructor|B
-TF|You can create objects of abstract classes|10|false
-MC|What does override keyword do?|15|Overrides base method,Checks if method is overridden correctly,Makes method virtual,Hides base method|B
-MC|What is dynamic binding?|15|Compile-time method resolution,Runtime method resolution,Binding variables,Memory binding|B
-MC|Which type of function call is resolved at runtime?|15|Normal function,Inline function,Virtual function,Static function|C
+TF|Polymorphism|Polymorphism means many forms|10|true
+MC|Polymorphism|What is compile-time polymorphism?|15|Virtual functions,Function overloading,Inheritance,Dynamic binding|B
+MC|Polymorphism|What is runtime polymorphism achieved through?|15|Templates,Virtual functions,Overloading,Macros|B
+MC|Polymorphism|What does the virtual keyword do?|10|Makes function virtual,Enables dynamic binding,Allows overriding,All of the above|D
+TF|Polymorphism|Pure virtual functions are declared with = 0|10|true
+MC|Polymorphism|What is an abstract class?|15|Class with no objects,Class with pure virtual function,Class with only virtual functions,Class with private constructor|B
+TF|Polymorphism|You can create objects of abstract classes|10|false
+MC|Polymorphism|What does override keyword do?|15|Overrides base method,Checks if method is overridden correctly,Makes method virtual,Hides base method|B
+MC|Polymorphism|What is dynamic binding?|15|Compile-time method resolution,Runtime method resolution,Binding variables,Memory binding|B
+MC|Polymorphism|Which type of function call is resolved at runtime?|15|Normal function,Inline function,Virtual function,Static function|C
 
 # ===== STL & CONTAINERS =====
-MC|What does STL stand for?|10|Standard Template Library,System Template Language,Static Type Library,String Template Logic|A
-MC|Which container is dynamic array?|10|array,vector,list,deque|B
-TF|vector automatically resizes when elements are added|10|true
-MC|Which container is LIFO?|10|queue,stack,vector,list|B
-MC|Which container is FIFO?|10|stack,queue,priority_queue,vector|B
-TF|map stores key-value pairs|10|true
-MC|Which container allows fast insertion and deletion?|15|vector,array,list,deque|C
-MC|What does push_back() do?|10|Add at beginning,Add at end,Remove from back,Push to stack|B
-TF|You need to include <vector> to use vector|10|true
-MC|Which iterator moves backward?|15|forward_iterator,reverse_iterator,bidirectional_iterator,random_access_iterator|B
+MC|STL|What does STL stand for?|10|Standard Template Library,System Template Language,Static Type Library,String Template Logic|A
+MC|STL|Which container is dynamic array?|10|array,vector,list,deque|B
+TF|STL|vector automatically resizes when elements are added|10|true
+MC|STL|Which container is LIFO?|10|queue,stack,vector,list|B
+MC|STL|Which container is FIFO?|10|stack,queue,priority_queue,vector|B
+TF|STL|map stores key-value pairs|10|true
+MC|STL|Which container allows fast insertion and deletion?|15|vector,array,list,deque|C
+MC|STL|What does push_back() do?|10|Add at beginning,Add at end,Remove from back,Push to stack|B
+TF|STL|You need to include <vector> to use vector|10|true
+MC|STL|Which iterator moves backward?|15|forward_iterator,reverse_iterator,bidirectional_iterator,random_access_iterator|B
 
 # ===== TEMPLATES =====
-MC|What keyword starts a template?|10|temp,template,generic,type|B
-TF|Templates enable generic programming|10|true
-MC|What is the syntax for function template?|15|template<typename T>,template[type T],generic<T>,type<T>|A
-MC|What does typename keyword indicate?|15|Type name,Template parameter,Variable type,Class type|B
-TF|You can have non-type template parameters|15|true
-MC|What is template specialization?|15|Special template,Specific implementation for a type,Template with special keyword,Generic template|B
-MC|When are templates instantiated?|15|At compile time,At runtime,At link time,Manually|A
-TF|Template code is generated for each type used|15|true
-MC|What is the difference between class and typename in templates?|15|class is for classes only,typename is newer,No difference in most cases,class is deprecated|C
-MC|What are variadic templates?|15|Templates with multiple types,Templates with variable arguments,Virtual templates,None|B
+MC|Templates|What keyword starts a template?|10|temp,template,generic,type|B
+TF|Templates|Templates enable generic programming|10|true
+MC|Templates|What is the syntax for function template?|15|template<typename T>,template[type T],generic<T>,type<T>|A
+MC|Templates|What does typename keyword indicate?|15|Type name,Template parameter,Variable type,Class type|B
+TF|Templates|You can have non-type template parameters|15|true
+MC|Templates|What is template specialization?|15|Special template,Specific implementation for a type,Template with special keyword,Generic template|B
+MC|Templates|When are templates instantiated?|15|At compile time,At runtime,At link time,Manually|A
+TF|Templates|Template code is generated for each type used|15|true
+MC|Templates|What is the difference between class and typename in templates?|15|class is for classes only,typename is newer,No difference in most cases,class is deprecated|C
+MC|Templates|What are variadic templates?|15|Templates with multiple types,Templates with variable arguments,Virtual templates,None|B
 
 # ===== EXCEPTIONS =====
-MC|Which keyword starts exception handling?|10|catch,try,throw,except|B
-MC|Which keyword throws an exception?|10|raise,throw,except,error|B
-TF|catch block catches exceptions|10|true
-MC|What is the syntax to catch all exceptions?|15|catch(...),catch(all),catch(*),catch(Exception e)|A
-MC|What does noexcept specify?|15|No exceptions allowed,Function won't throw exceptions,Catch all exceptions,None|B
-TF|You can throw any type as an exception|10|true
-MC|What happens if an exception is not caught?|15|Program continues,Program terminates,Exception ignored,Compile error|B
-MC|Which is the standard exception base class?|15|Exception,exception,std::exception,base_exception|C
-TF|Multiple catch blocks can follow a try block|10|true
-MC|What does throw; do without an argument in catch block?|15|Error,Rethrows current exception,Throws nothing,Ends program|B
+MC|Exceptions|Which keyword starts exception handling?|10|catch,try,throw,except|B
+MC|Exceptions|Which keyword throws an exception?|10|raise,throw,except,error|B
+TF|Exceptions|catch block catches exceptions|10|true
+MC|Exceptions|What is the syntax to catch all exceptions?|15|catch(...),catch(all),catch(*),catch(Exception e)|A
+MC|Exceptions|What does noexcept specify?|15|No exceptions allowed,Function won't throw exceptions,Catch all exceptions,None|B
+TF|Exceptions|You can throw any type as an exception|10|true
+MC|Exceptions|What happens if an exception is not caught?|15|Program continues,Program terminates,Exception ignored,Compile error|B
+MC|Exceptions|Which is the standard exception base class?|15|Exception,exception,std::exception,base_exception|C
+TF|Exceptions|Multiple catch blocks can follow a try block|10|true
+MC|Exceptions|What does throw; do without an argument in catch block?|15|Error,Rethrows current exception,Throws nothing,Ends program|B
 
 # ===== MISCELLANEOUS =====
-MC|What does const after function declaration mean?|15|Constant function,Function won't modify object,Constant return,Inline function|B
-TF|namespace is used to avoid name conflicts|10|true
-MC|What is the scope resolution operator?|10|.,::,->,=>|B
-MC|What does static keyword mean for class members?|15|Private member,Shared across all objects,Constant member,Virtual member|B
-TF|friend functions can access private members|15|true
-MC|What is operator overloading?|10|Too many operators,Defining custom behavior for operators,Using wrong operator,Multiple operators|B
-TF|You can overload the dot operator|15|false
-MC|What does extern keyword do?|15|External function,Declares variable defined elsewhere,Public variable,None|B
-MC|What is the difference between struct and class?|15|No difference,Default access is public in struct,struct is C only,struct is deprecated|B
-MC|What does mutable keyword allow?|15|Variable mutation,Modifying const object members,Multiple values,None|B
+MC|Advanced|What does const after function declaration mean?|15|Constant function,Function won't modify object,Constant return,Inline function|B
+TF|Namespaces|namespace is used to avoid name conflicts|10|true
+MC|Advanced|What is the scope resolution operator?|10|.,::,->,=>|B
+MC|Advanced|What does static keyword mean for class members?|15|Private member,Shared across all objects,Constant member,Virtual member|B
+TF|Advanced|friend functions can access private members|15|true
+MC|Operators|What is operator overloading?|10|Too many operators,Defining custom behavior for operators,Using wrong operator,Multiple operators|B
+TF|Operators|You can overload the dot operator|15|false
+MC|Advanced|What does extern keyword do?|15|External function,Declares variable defined elsewhere,Public variable,None|B
+MC|Advanced|What is the difference between struct and class?|15|No difference,Default access is public in struct,struct is C only,struct is deprecated|B
+MC|Advanced|What does mutable keyword allow?|15|Variable mutation,Modifying const object members,Multiple values,None|B
 
 # ===== ADVANCED OOP =====
-MC|What is a copy constructor?|10|Constructor that copies,Special constructor for copying objects,Constructor with copy keyword,None|B
-TF|Copy constructor is called when object is passed by value|10|true
-MC|What is a move constructor?|15|Constructor that moves,Constructor using rvalue references,Constructor that relocates,None|B
-MC|What does the explicit keyword prevent?|15|Explicit calls,Implicit type conversions,Explicit constructors,All conversions|B
-TF|A class can have both copy and move constructors|15|true
-MC|What is the rule of three?|15|3 constructors,Destructor copy-constructor copy-assignment,3 member functions,3 inheritance levels|B
-MC|What is the rule of five?|15|5 constructors,Rule of three plus move operations,5 member functions,5 data members|B
-MC|What does delete keyword do with functions?|15|Deletes function,Prevents function from being called,Removes function,None|B
-MC|What does default keyword do with special functions?|15|Sets default,Tells compiler to generate default version,Makes function default,None|B
-TF|Virtual destructors should be used in base classes|15|true
+MC|OOP|What is a copy constructor?|10|Constructor that copies,Special constructor for copying objects,Constructor with copy keyword,None|B
+TF|OOP|Copy constructor is called when object is passed by value|10|true
+MC|Move Semantics|What is a move constructor?|15|Constructor that moves,Constructor using rvalue references,Constructor that relocates,None|B
+MC|OOP|What does the explicit keyword prevent?|15|Explicit calls,Implicit type conversions,Explicit constructors,All conversions|B
+TF|OOP|A class can have both copy and move constructors|15|true
+MC|OOP|What is the rule of three?|15|3 constructors,Destructor copy-constructor copy-assignment,3 member functions,3 inheritance levels|B
+MC|OOP|What is the rule of five?|15|5 constructors,Rule of three plus move operations,5 member functions,5 data members|B
+MC|OOP|What does delete keyword do with functions?|15|Deletes function,Prevents function from being called,Removes function,None|B
+MC|OOP|What does default keyword do with special functions?|15|Sets default,Tells compiler to generate default version,Makes function default,None|B
+TF|OOP|Virtual destructors should be used in base classes|15|true
 
 # ===== LAMBDA EXPRESSIONS =====
-MC|What is a lambda expression?|15|Greek letter,Anonymous function,Special operator,None|B
-MC|Which symbol starts a lambda?|10|{,[,(,<|B
-TF|Lambdas can capture variables from outer scope|15|true
-MC|What does [=] capture clause mean?|15|Capture nothing,Capture all by value,Capture all by reference,Capture one variable|B
-MC|What does [&] capture clause mean?|15|Capture nothing,Capture all by value,Capture all by reference,Capture address|C
-MC|What is [this] capture in lambdas?|15|Captures this keyword,Captures current object pointer,Captures nothing,Syntax error|B
-TF|Lambdas can be stored in std::function|15|true
-MC|What is the return type of auto for lambdas?|15|int,Deduced automatically,void,function|B
-MC|Can lambdas be recursive?|15|No,Yes with std::function,Yes always,Only with templates|B
-TF|Lambdas are a C++11 feature|10|true
+MC|Lambdas|What is a lambda expression?|15|Greek letter,Anonymous function,Special operator,None|B
+MC|Lambdas|Which symbol starts a lambda?|10|{,[,(,<|B
+TF|Lambdas|Lambdas can capture variables from outer scope|15|true
+MC|Lambdas|What does [=] capture clause mean?|15|Capture nothing,Capture all by value,Capture all by reference,Capture one variable|B
+MC|Lambdas|What does [&] capture clause mean?|15|Capture nothing,Capture all by value,Capture all by reference,Capture address|C
+MC|Lambdas|What is [this] capture in lambdas?|15|Captures this keyword,Captures current object pointer,Captures nothing,Syntax error|B
+TF|Lambdas|Lambdas can be stored in std::function|15|true
+MC|Lambdas|What is the return type of auto for lambdas?|15|int,Deduced automatically,void,function|B
+MC|Lambdas|Can lambdas be recursive?|15|No,Yes with std::function,Yes always,Only with templates|B
+TF|Lambdas|Lambdas are a C++11 feature|10|true
 
 # ===== SMART POINTERS =====
-MC|What header is needed for smart pointers?|10|<pointer>,<memory>,<smart>,<shared>|B
-MC|Which smart pointer allows shared ownership?|10|unique_ptr,shared_ptr,weak_ptr,auto_ptr|B
-MC|What does unique_ptr guarantee?|15|Uniqueness,Exclusive ownership,One pointer only,Cannot be copied|D
-TF|unique_ptr can be copied|10|false
-MC|What does make_unique do?|15|Makes unique,Creates unique_ptr safely,Makes pointer unique,None|B
-MC|What does make_shared do?|15|Makes shared,Creates shared_ptr efficiently,Shares pointer,None|B
-MC|What is weak_ptr used for?|15|Weak references,Breaking circular references,Temporary pointers,Weak ownership|B
-TF|auto_ptr is deprecated in C++11|10|true
-MC|Which smart pointer can be moved but not copied?|10|shared_ptr,unique_ptr,weak_ptr,All of them|B
-MC|What does get() method do on smart pointers?|10|Gets value,Returns raw pointer,Gets reference,Gets copy|B
+MC|Smart Pointers|What header is needed for smart pointers?|10|<pointer>,<memory>,<smart>,<shared>|B
+MC|Smart Pointers|Which smart pointer allows shared ownership?|10|unique_ptr,shared_ptr,weak_ptr,auto_ptr|B
+MC|Smart Pointers|What does unique_ptr guarantee?|15|Uniqueness,Exclusive ownership,One pointer only,Cannot be copied|D
+TF|Smart Pointers|unique_ptr can be copied|10|false
+MC|Smart Pointers|What does make_unique do?|15|Makes unique,Creates unique_ptr safely,Makes pointer unique,None|B
+MC|Smart Pointers|What does make_shared do?|15|Makes shared,Creates shared_ptr efficiently,Shares pointer,None|B
+MC|Smart Pointers|What is weak_ptr used for?|15|Weak references,Breaking circular references,Temporary pointers,Weak ownership|B
+TF|Smart Pointers|auto_ptr is deprecated in C++11|10|true
+MC|Smart Pointers|Which smart pointer can be moved but not copied?|10|shared_ptr,unique_ptr,weak_ptr,All of them|B
+MC|Smart Pointers|What does get() method do on smart pointers?|10|Gets value,Returns raw pointer,Gets reference,Gets copy|B
 
 # ===== MOVE SEMANTICS =====
-MC|What are rvalue references?|15|Right values,References to temporary objects,References on right side,None|B
-MC|What symbol denotes rvalue reference?|10|&,&&,*,->|B
-TF|Move semantics transfer ownership|15|true
-MC|What does std::move do?|15|Moves object,Casts to rvalue reference,Physically moves memory,None|B
-MC|What is std::forward used for?|15|Forward declaration,Perfect forwarding,Forwarding references,None|B
-TF|Move constructor takes rvalue reference parameter|15|true
-MC|When is move constructor called?|15|Always,When source is temporary,When explicitly moved,B and C|D
-MC|What is perfect forwarding?|15|Perfect pass,Forwarding without losing value category,Error-free forwarding,None|B
-TF|std::move actually moves the object|10|false
-MC|What header contains std::move?|10|<move>,<utility>,<algorithm>,<memory>|B
+MC|Move Semantics|What are rvalue references?|15|Right values,References to temporary objects,References on right side,None|B
+MC|Move Semantics|What symbol denotes rvalue reference?|10|&,&&,*,->|B
+TF|Move Semantics|Move semantics transfer ownership|15|true
+MC|Move Semantics|What does std::move do?|15|Moves object,Casts to rvalue reference,Physically moves memory,None|B
+MC|Move Semantics|What is std::forward used for?|15|Forward declaration,Perfect forwarding,Forwarding references,None|B
+TF|Move Semantics|Move constructor takes rvalue reference parameter|15|true
+MC|Move Semantics|When is move constructor called?|15|Always,When source is temporary,When explicitly moved,B and C|D
+MC|Move Semantics|What is perfect forwarding?|15|Perfect pass,Forwarding without losing value category,Error-free forwarding,None|B
+TF|Move Semantics|std::move actually moves the object|10|false
+MC|Move Semantics|What header contains std::move?|10|<move>,<utility>,<algorithm>,<memory>|B
 
 # ===== CONSTEXPR & COMPILE TIME =====
-MC|What does constexpr mean?|15|Constant expression,Expression evaluated at compile time,Constant variable,None|B
-TF|constexpr functions can be used in constant expressions|15|true
-MC|What is the difference between const and constexpr?|15|No difference,constexpr is compile-time const is runtime,const is older,constexpr is newer|B
-MC|Can constexpr functions have loops?|15|No,Yes in C++14+,Never,Only for loops|B
-TF|constexpr variables must be initialized|15|true
-MC|What is if constexpr?|15|Compile-time if,If statement that is constant,Constant conditional,C++17 compile-time conditional|D
-MC|Can classes be constexpr?|15|No,Yes with constexpr constructor,Yes always,Only in C++20|B
-TF|constexpr functions can call non-constexpr functions|10|false
-MC|What is consteval in C++20?|15|Constant evaluation,Forces compile-time evaluation,Evaluates constants,Immediate function|D
-MC|What is constinit in C++20?|15|Constant initialization,Forces static initialization,Constant init,Initializes at compile time|B
+MC|Constexpr|What does constexpr mean?|15|Constant expression,Expression evaluated at compile time,Constant variable,None|B
+TF|Constexpr|constexpr functions can be used in constant expressions|15|true
+MC|Constexpr|What is the difference between const and constexpr?|15|No difference,constexpr is compile-time const is runtime,const is older,constexpr is newer|B
+MC|Constexpr|Can constexpr functions have loops?|15|No,Yes in C++14+,Never,Only for loops|B
+TF|Constexpr|constexpr variables must be initialized|15|true
+MC|Constexpr|What is if constexpr?|15|Compile-time if,If statement that is constant,Constant conditional,C++17 compile-time conditional|D
+MC|Constexpr|Can classes be constexpr?|15|No,Yes with constexpr constructor,Yes always,Only in C++20|B
+TF|Constexpr|constexpr functions can call non-constexpr functions|10|false
+MC|Constexpr|What is consteval in C++20?|15|Constant evaluation,Forces compile-time evaluation,Evaluates constants,Immediate function|D
+MC|Constexpr|What is constinit in C++20?|15|Constant initialization,Forces static initialization,Constant init,Initializes at compile time|B
 
 # ===== TYPE TRAITS & META-PROGRAMMING =====
-MC|What header contains type traits?|15|<traits>,<type_traits>,<types>,<meta>|B
-MC|What does std::is_integral check?|15|Is integer,If type is integral type,Is complete,Is valid|B
-TF|Type traits are evaluated at compile time|15|true
-MC|What does std::enable_if do?|15|Enables features,SFINAE for template specialization,Enables types,None|B
-MC|What is SFINAE?|15|Error,Substitution Failure Is Not An Error,Syntax error,None|B
-TF|decltype deduces the type of an expression|15|true
-MC|What does std::remove_reference do?|15|Removes references,Removes reference from type,Deletes references,None|B
-MC|What is template metaprogramming?|15|Programming templates,Compile-time computation using templates,Template debugging,None|B
-MC|What does std::is_same check?|15|Same value,If two types are the same,Same object,Equality|B
-TF|Type traits can modify types at compile time|15|true
+MC|Metaprogramming|What header contains type traits?|15|<traits>,<type_traits>,<types>,<meta>|B
+MC|Metaprogramming|What does std::is_integral check?|15|Is integer,If type is integral type,Is complete,Is valid|B
+TF|Metaprogramming|Type traits are evaluated at compile time|15|true
+MC|Metaprogramming|What does std::enable_if do?|15|Enables features,SFINAE for template specialization,Enables types,None|B
+MC|Metaprogramming|What is SFINAE?|15|Error,Substitution Failure Is Not An Error,Syntax error,None|B
+TF|Metaprogramming|decltype deduces the type of an expression|15|true
+MC|Metaprogramming|What does std::remove_reference do?|15|Removes references,Removes reference from type,Deletes references,None|B
+MC|Metaprogramming|What is template metaprogramming?|15|Programming templates,Compile-time computation using templates,Template debugging,None|B
+MC|Metaprogramming|What does std::is_same check?|15|Same value,If two types are the same,Same object,Equality|B
+TF|Metaprogramming|Type traits can modify types at compile time|15|true
 
 # ===== THREADING & CONCURRENCY =====
-MC|What header is needed for threading?|10|<thread>,<threading>,<concurrent>,<parallel>|A
-MC|How do you create a thread?|10|new thread,std::thread t(function),thread(function),create_thread()|B
-TF|Threads run concurrently|10|true
-MC|What does join() do on a thread?|10|Joins threads,Waits for thread to finish,Merges threads,Connects threads|B
-MC|What does detach() do on a thread?|10|Detaches thread,Allows thread to run independently,Removes thread,Stops thread|B
-MC|What is a mutex?|15|Mutual exclusion,Lock for thread synchronization,Thread lock,Synchronization primitive|A
-MC|What does lock_guard do?|15|Guards locks,RAII wrapper for mutex,Locks guard,Protection mechanism|B
-TF|Race conditions occur when multiple threads access shared data|15|true
-MC|What is std::atomic used for?|15|Atomic operations,Lock-free thread-safe operations,Atomic variables,Indivisible operations|B
-MC|What header contains mutex?|10|<mutex>,<lock>,<sync>,<thread>|A
+MC|Threading|What header is needed for threading?|10|<thread>,<threading>,<concurrent>,<parallel>|A
+MC|Threading|How do you create a thread?|10|new thread,std::thread t(function),thread(function),create_thread()|B
+TF|Threading|Threads run concurrently|10|true
+MC|Threading|What does join() do on a thread?|10|Joins threads,Waits for thread to finish,Merges threads,Connects threads|B
+MC|Threading|What does detach() do on a thread?|10|Detaches thread,Allows thread to run independently,Removes thread,Stops thread|B
+MC|Threading|What is a mutex?|15|Mutual exclusion,Lock for thread synchronization,Thread lock,Synchronization primitive|A
+MC|Threading|What does lock_guard do?|15|Guards locks,RAII wrapper for mutex,Locks guard,Protection mechanism|B
+TF|Threading|Race conditions occur when multiple threads access shared data|15|true
+MC|Threading|What is std::atomic used for?|15|Atomic operations,Lock-free thread-safe operations,Atomic variables,Indivisible operations|B
+MC|Threading|What header contains mutex?|10|<mutex>,<lock>,<sync>,<thread>|A
 
 # ===== MODERN C++ FEATURES =====
-MC|What is auto keyword used for?|10|Automatic,Type deduction,Auto increment,Automatic memory|B
-TF|auto can deduce return types|10|true
-MC|What is decltype?|15|Declares type,Queries type of expression,Type declaration,Deduces type|B
-MC|What is nullptr?|10|Null pointer,Type-safe null pointer constant,Zero pointer,Empty pointer|B
-TF|nullptr is preferred over NULL|10|true
-MC|What is range-based for loop?|10|Loop over ranges,for(auto x : container),Range loop,Ranged iteration|B
-MC|What is uniform initialization?|15|Same initialization,Initialization using braces,Universal init,Consistent syntax|B
-TF|Uniform initialization prevents narrowing conversions|15|true
-MC|What is list initialization?|10|Initialize list,Initialization with {},List construct,Array init|B
-MC|What are structured bindings (C++17)?|15|Binding structures,Unpacking tuple-like objects,Binding variables,Decomposition|D
+MC|Modern C++|What is auto keyword used for?|10|Automatic,Type deduction,Auto increment,Automatic memory|B
+TF|Modern C++|auto can deduce return types|10|true
+MC|Modern C++|What is decltype?|15|Declares type,Queries type of expression,Type declaration,Deduces type|B
+MC|Modern C++|What is nullptr?|10|Null pointer,Type-safe null pointer constant,Zero pointer,Empty pointer|B
+TF|Modern C++|nullptr is preferred over NULL|10|true
+MC|Modern C++|What is range-based for loop?|10|Loop over ranges,for(auto x : container),Range loop,Ranged iteration|B
+MC|Modern C++|What is uniform initialization?|15|Same initialization,Initialization using braces,Universal init,Consistent syntax|B
+TF|Modern C++|Uniform initialization prevents narrowing conversions|15|true
+MC|Modern C++|What is list initialization?|10|Initialize list,Initialization with {},List construct,Array init|B
+MC|Modern C++|What are structured bindings (C++17)?|15|Binding structures,Unpacking tuple-like objects,Binding variables,Decomposition|D
 
 # ===== STL ALGORITHMS =====
-MC|What header contains STL algorithms?|10|<algorithms>,<algorithm>,<algo>,<stl>|B
-MC|What does std::sort do?|5|Sorts arrays,Sorts containers,Organizes data,All of above|D
-TF|std::sort uses quicksort|10|false
-MC|What does std::find return?|10|Element,Iterator to element,Index,Pointer|B
-MC|What does std::accumulate do?|10|Accumulates values,Sums elements,Adds up,Aggregates|B
-MC|What is the time complexity of std::sort?|15|O(n),O(n log n),O(n²),O(log n)|B
-TF|std::binary_search requires sorted range|15|true
-MC|What does std::transform do?|15|Transforms data,Applies function to range,Changes values,Maps operation|B
-MC|What does std::count_if do?|10|Counts conditions,Counts elements matching predicate,Conditional count,Counts if true|B
-MC|What is a predicate in STL?|15|Prediction,Function returning bool,Pre-condition,Boolean function|B
+MC|STL|What header contains STL algorithms?|10|<algorithms>,<algorithm>,<algo>,<stl>|B
+MC|STL|What does std::sort do?|5|Sorts arrays,Sorts containers,Organizes data,All of above|D
+TF|STL|std::sort uses quicksort|10|false
+MC|STL|What does std::find return?|10|Element,Iterator to element,Index,Pointer|B
+MC|STL|What does std::accumulate do?|10|Accumulates values,Sums elements,Adds up,Aggregates|B
+MC|STL|What is the time complexity of std::sort?|15|O(n),O(n log n),O(n²),O(log n)|B
+TF|STL|std::binary_search requires sorted range|15|true
+MC|STL|What does std::transform do?|15|Transforms data,Applies function to range,Changes values,Maps operation|B
+MC|STL|What does std::count_if do?|10|Counts conditions,Counts elements matching predicate,Conditional count,Counts if true|B
+MC|STL|What is a predicate in STL?|15|Prediction,Function returning bool,Pre-condition,Boolean function|B
 
 # ===== FILE I/O ADVANCED =====
-MC|What mode opens file for appending?|10|std::ios::app,std::ios::append,ios::add,ios::end|A
-TF|Binary mode is specified with std::ios::binary|10|true
-MC|What does tellg() do?|15|Tells get,Returns current read position,Gets position,Reads position|B
-MC|What does seekp() do?|15|Seeks position,Sets write position,Moves pointer,Positions output|B
-MC|What is the difference between >> and getline()?|10|No difference,>> stops at whitespace getline reads line,>> is faster,getline is newer|B
-TF|You should always check if file opened successfully|10|true
-MC|What does flush() do?|10|Flushes toilet,Writes buffer to file,Clears buffer,Empties stream|B
-MC|What is std::stringstream used for?|15|String streams,In-memory string I/O,String processing,String buffer|B
-MC|What does eof() check?|10|End of file,If reached end of file,File ending,Last position|B
-MC|What is the difference between close() and destructor?|15|No difference,close() is explicit destructor is automatic,close() is faster,Destructor is safer|B
+MC|File I/O|What mode opens file for appending?|10|std::ios::app,std::ios::append,ios::add,ios::end|A
+TF|File I/O|Binary mode is specified with std::ios::binary|10|true
+MC|File I/O|What does tellg() do?|15|Tells get,Returns current read position,Gets position,Reads position|B
+MC|File I/O|What does seekp() do?|15|Seeks position,Sets write position,Moves pointer,Positions output|B
+MC|File I/O|What is the difference between >> and getline()?|10|No difference,>> stops at whitespace getline reads line,>> is faster,getline is newer|B
+TF|File I/O|You should always check if file opened successfully|10|true
+MC|File I/O|What does flush() do?|10|Flushes toilet,Writes buffer to file,Clears buffer,Empties stream|B
+MC|File I/O|What is std::stringstream used for?|15|String streams,In-memory string I/O,String processing,String buffer|B
+MC|File I/O|What does eof() check?|10|End of file,If reached end of file,File ending,Last position|B
+MC|File I/O|What is the difference between close() and destructor?|15|No difference,close() is explicit destructor is automatic,close() is faster,Destructor is safer|B
 
 # ===== PREPROCESSOR =====
-MC|What does #include do?|5|Includes file,Inserts file contents,Imports file,Adds file|B
-MC|What does #define create?|5|Definition,Macro,Constant,Variable|B
-TF|Macros are type-safe|5|false
-MC|What is #ifdef used for?|10|If defined,Conditional compilation,Checking definition,Preprocessor if|B
-MC|What does #pragma once do?|10|Runs once,Include guard,One time inclusion,Prevents multiple inclusion|D
-TF|Preprocessor runs before compilation|10|true
-MC|What is the difference between #include <> and ""?|10|No difference,<> system headers "" user headers,<> faster,<> newer|B
-MC|What does __FILE__ macro contain?|10|File handle,Current file name,File path,Source file|B
-MC|What does __LINE__ macro contain?|10|Text line,Current line number,Line content,Source line|B
-MC|What is #undef used for?|10|Undefined,Removes macro definition,Undefines variable,Deletes definition|B
+MC|Preprocessor|What does #include do?|5|Includes file,Inserts file contents,Imports file,Adds file|B
+MC|Preprocessor|What does #define create?|5|Definition,Macro,Constant,Variable|B
+TF|Preprocessor|Macros are type-safe|5|false
+MC|Preprocessor|What is #ifdef used for?|10|If defined,Conditional compilation,Checking definition,Preprocessor if|B
+MC|Preprocessor|What does #pragma once do?|10|Runs once,Include guard,One time inclusion,Prevents multiple inclusion|D
+TF|Preprocessor|Preprocessor runs before compilation|10|true
+MC|Preprocessor|What is the difference between #include <> and ""?|10|No difference,<> system headers "" user headers,<> faster,<> newer|B
+MC|Preprocessor|What does __FILE__ macro contain?|10|File handle,Current file name,File path,Source file|B
+MC|Preprocessor|What does __LINE__ macro contain?|10|Text line,Current line number,Line content,Source line|B
+MC|Preprocessor|What is #undef used for?|10|Undefined,Removes macro definition,Undefines variable,Deletes definition|B
 
 # ===== CASTING =====
-MC|What is static_cast used for?|15|Static variables,Compile-time type conversion,Static conversion,Type casting|B
-MC|What is dynamic_cast used for?|15|Dynamic conversion,Runtime polymorphic casting,Dynamic types,Pointer casting|B
-MC|What does const_cast do?|15|Casts constants,Removes const qualifier,Constant casting,Makes constant|B
-MC|What does reinterpret_cast do?|15|Reinterprets code,Low-level reinterpreting of bits,Reinterprets types,Converts types|B
-TF|dynamic_cast requires RTTI|15|true
-MC|When does dynamic_cast return nullptr?|15|Always,When cast fails for pointers,Never,On error|B
-MC|What is C-style cast?|10|Old cast,(type)value syntax,C casting,Unsafe cast|B
-TF|C++ casts are safer than C-style casts|10|true
-MC|Which cast can remove const?|15|static_cast,const_cast,dynamic_cast,reinterpret_cast|B
-MC|Which cast is used for polymorphic types?|15|static_cast,dynamic_cast,const_cast,Any cast|B
+MC|Casting|What is static_cast used for?|15|Static variables,Compile-time type conversion,Static conversion,Type casting|B
+MC|Casting|What is dynamic_cast used for?|15|Dynamic conversion,Runtime polymorphic casting,Dynamic types,Pointer casting|B
+MC|Casting|What does const_cast do?|15|Casts constants,Removes const qualifier,Constant casting,Makes constant|B
+MC|Casting|What does reinterpret_cast do?|15|Reinterprets code,Low-level reinterpreting of bits,Reinterprets types,Converts types|B
+TF|Casting|dynamic_cast requires RTTI|15|true
+MC|Casting|When does dynamic_cast return nullptr?|15|Always,When cast fails for pointers,Never,On error|B
+MC|Casting|What is C-style cast?|10|Old cast,(type)value syntax,C casting,Unsafe cast|B
+TF|Casting|C++ casts are safer than C-style casts|10|true
+MC|Casting|Which cast can remove const?|15|static_cast,const_cast,dynamic_cast,reinterpret_cast|B
+MC|Casting|Which cast is used for polymorphic types?|15|static_cast,dynamic_cast,const_cast,Any cast|B
 
 # ===== INITIALIZATION =====
-MC|What is default initialization?|10|Default values,Variable declared without initializer,Initial default,Zero init|B
-MC|What is value initialization?|15|Initialize with value,Initialization with (),Valued init,Set value|B
-MC|What is zero initialization?|10|Initialize to zero,Initialization to zero values,Zero value,Default zero|B
-TF|Global variables are zero-initialized|10|true
-MC|What is aggregate initialization?|15|Aggregate values,Initialization of aggregates with {},Group init,Combined init|B
-MC|What is direct initialization?|10|Direct values,Type(value) syntax,Direct assign,Value set|B
-MC|What is copy initialization?|10|Copy values,Type var = value syntax,Copy construct,Clone init|B
-TF|Uniform initialization prevents narrowing|15|true
-MC|What happens with int x{};?|10|Error,Zero initialization,Default value,Undefined|B
-MC|What is designated initialization (C++20)?|15|Designated values,Initialize members by name,Named init,Specific initialization|B
+MC|Initialization|What is default initialization?|10|Default values,Variable declared without initializer,Initial default,Zero init|B
+MC|Initialization|What is value initialization?|15|Initialize with value,Initialization with (),Valued init,Set value|B
+MC|Initialization|What is zero initialization?|10|Initialize to zero,Initialization to zero values,Zero value,Default zero|B
+TF|Initialization|Global variables are zero-initialized|10|true
+MC|Initialization|What is aggregate initialization?|15|Aggregate values,Initialization of aggregates with {},Group init,Combined init|B
+MC|Initialization|What is direct initialization?|10|Direct values,Type(value) syntax,Direct assign,Value set|B
+MC|Initialization|What is copy initialization?|10|Copy values,Type var = value syntax,Copy construct,Clone init|B
+TF|Initialization|Uniform initialization prevents narrowing|15|true
+MC|Initialization|What happens with int x{};?|10|Error,Zero initialization,Default value,Undefined|B
+MC|Initialization|What is designated initialization (C++20)?|15|Designated values,Initialize members by name,Named init,Specific initialization|B
 
 # ===== NAMESPACES ADVANCED =====
-MC|What is an unnamed namespace?|15|No name,Namespace with internal linkage,Anonymous namespace,Hidden namespace|C
-MC|What is a nested namespace?|10|Nested code,Namespace inside namespace,Inner namespace,Contained namespace|B
-TF|using namespace should be avoided in headers|15|true
-MC|What is namespace aliasing?|15|Alias namespace,Creating shorter name for namespace,Namespace synonym,Name shortcut|B
-MC|What does using declaration do?|10|Declares usage,Brings name into current scope,Uses declaration,Imports name|B
-MC|What is ADL (Argument Dependent Lookup)?|15|Argument lookup,Koenig lookup for functions,Dependent arguments,Argument search|B
-TF|You can reopen a namespace|15|true
-MC|What is inline namespace?|15|Inline code,Namespace merged with enclosing scope,Fast namespace,Embedded namespace|B
-MC|Can namespaces be nested with ::?|10|No,Yes namespace1::namespace2,Yes always,Only in C++17|B
-MC|What is the global namespace?|10|All globals,Outermost namespace,Universal scope,Root namespace|B
+MC|Namespaces|What is an unnamed namespace?|15|No name,Namespace with internal linkage,Anonymous namespace,Hidden namespace|C
+MC|Namespaces|What is a nested namespace?|10|Nested code,Namespace inside namespace,Inner namespace,Contained namespace|B
+TF|Namespaces|using namespace should be avoided in headers|15|true
+MC|Namespaces|What is namespace aliasing?|15|Alias namespace,Creating shorter name for namespace,Namespace synonym,Name shortcut|B
+MC|Namespaces|What does using declaration do?|10|Declares usage,Brings name into current scope,Uses declaration,Imports name|B
+MC|Namespaces|What is ADL (Argument Dependent Lookup)?|15|Argument lookup,Koenig lookup for functions,Dependent arguments,Argument search|B
+TF|Namespaces|You can reopen a namespace|15|true
+MC|Namespaces|What is inline namespace?|15|Inline code,Namespace merged with enclosing scope,Fast namespace,Embedded namespace|B
+MC|Namespaces|Can namespaces be nested with ::?|10|No,Yes namespace1::namespace2,Yes always,Only in C++17|B
+MC|Namespaces|What is the global namespace?|10|All globals,Outermost namespace,Universal scope,Root namespace|B
 
 # ===== DEBUGGING & TESTING =====
-MC|What is assert() used for?|10|Assertion,Checking conditions in debug mode,Testing code,Verifying|B
-TF|assert() is disabled in release builds with NDEBUG|15|true
-MC|What is static_assert?|15|Static check,Compile-time assertion,Static assertion,Build-time check|B
-MC|What header contains assert?|5|<assert>,<cassert>,<debug>,<test>|B
-MC|What does static_assert check?|15|Static members,Compile-time conditions,Static validity,Type checks|B
-TF|static_assert has no runtime cost|15|true
-MC|What is a unit test?|10|One test,Testing individual units,Single test,Component test|B
-MC|What is integration testing?|10|Integrated tests,Testing combined components,System testing,Full testing|B
-MC|What is regression testing?|15|Going back,Testing for reintroduced bugs,Backward testing,Previous tests|B
-MC|What is code coverage?|15|Code spread,Measure of tested code,Coverage area,Test completeness|B
+MC|Testing|What is assert() used for?|10|Assertion,Checking conditions in debug mode,Testing code,Verifying|B
+TF|Testing|assert() is disabled in release builds with NDEBUG|15|true
+MC|Testing|What is static_assert?|15|Static check,Compile-time assertion,Static assertion,Build-time check|B
+MC|Testing|What header contains assert?|5|<assert>,<cassert>,<debug>,<test>|B
+MC|Testing|What does static_assert check?|15|Static members,Compile-time conditions,Static validity,Type checks|B
+TF|Testing|static_assert has no runtime cost|15|true
+MC|Testing|What is a unit test?|10|One test,Testing individual units,Single test,Component test|B
+MC|Testing|What is integration testing?|10|Integrated tests,Testing combined components,System testing,Full testing|B
+MC|Testing|What is regression testing?|15|Going back,Testing for reintroduced bugs,Backward testing,Previous tests|B
+MC|Testing|What is code coverage?|15|Code spread,Measure of tested code,Coverage area,Test completeness|B
 
 # ===== FINAL ADVANCED TOPICS =====
-MC|What is CRTP (Curiously Recurring Template Pattern)?|15|Template pattern,Class inheriting from template of itself,Recursive template,Design pattern|B
-MC|What is type erasure?|15|Erasing types,Hiding type information,Removing types,Generic wrapper|B
-TF|std::any can hold any type (C++17)|15|true
-MC|What is std::variant (C++17)?|15|Variable type,Type-safe union,Variant data,Multiple types|B
-MC|What is std::optional (C++17)?|15|Optional values,May or may not contain value,Optional parameter,Nullable type|B
-MC|What is std::string_view (C++17)?|15|String viewer,Non-owning view of string,String reference,Read-only string|B
-TF|std::string_view owns the string data|10|false
-MC|What is a span (C++20)?|15|Time span,Non-owning view of contiguous sequence,Array span,Range view|B
-MC|What are concepts (C++20)?|15|Programming concepts,Named requirements for templates,Type concepts,Template constraints|D
-MC|What is std::format (C++20)?|15|Format code,Type-safe string formatting,Format strings,String builder|B
+MC|Advanced|What is CRTP (Curiously Recurring Template Pattern)?|15|Template pattern,Class inheriting from template of itself,Recursive template,Design pattern|B
+MC|Advanced|What is type erasure?|15|Erasing types,Hiding type information,Removing types,Generic wrapper|B
+TF|Modern C++|std::any can hold any type (C++17)|15|true
+MC|Modern C++|What is std::variant (C++17)?|15|Variable type,Type-safe union,Variant data,Multiple types|B
+MC|Modern C++|What is std::optional (C++17)?|15|Optional values,May or may not contain value,Optional parameter,Nullable type|B
+MC|Modern C++|What is std::string_view (C++17)?|15|String viewer,Non-owning view of string,String reference,Read-only string|B
+TF|Modern C++|std::string_view owns the string data|10|false
+MC|Modern C++|What is a span (C++20)?|15|Time span,Non-owning view of contiguous sequence,Array span,Range view|B
+MC|Modern C++|What are concepts (C++20)?|15|Programming concepts,Named requirements for templates,Type concepts,Template constraints|D
+MC|Modern C++|What is std::format (C++20)?|15|Format code,Type-safe string formatting,Format strings,String builder|B
