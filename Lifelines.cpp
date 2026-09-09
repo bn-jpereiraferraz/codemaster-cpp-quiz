@@ -61,14 +61,10 @@ void Lifelines::display_available() const {
     if (skipAvailable) {
         std::cout << ColorTheme::GREEN << "[SKIP]" << ColorTheme::DIM << " (type 'skip') " << ColorTheme::RESET;
     } else {
-        std::cout << ColorTheme::DIM << "[Used] ";
-    }
-
-    if (hintAvailable) {
-        std::cout << ColorTheme::GREEN << "[HINT]" << ColorTheme::DIM << " (coming soon) " << ColorTheme::RESET;
-    } else {
         std::cout << ColorTheme::DIM << "[Used]";
     }
+
+    std::cout << ColorTheme::DIM << "  |  💡 Hints: Always available (type 'hint')" << ColorTheme::RESET;
 
     std::cout << std::endl;
 }

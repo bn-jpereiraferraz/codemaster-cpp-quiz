@@ -7,6 +7,8 @@
 #include "Lifelines.h"
 #include "GlobalTimer.h"
 #include "Lives.h"
+#include "Gamemode.h"
+#include "statistics.h"
 #include <string>
 #include <vector>
 
@@ -19,20 +21,6 @@ enum Difficulty {
     MEDIUM = 10,   // 10-point questions
     HARD = 15,     // 15-point questions
     MIXED = 0      // All difficulties (no filter)
-};
-
-//==============
-//GAME MODE ENUM
-//==============
-//Different gameplay modes with unique rules
-
-enum Gamemode{
-    CLASSIC, //Normal mode configurable (current gameplay)
-    QUICK_ATTACK, //5min timelimit, wrong answer = -15s penalty
-    SURVIVAL, //3 lives, lose 1 per answer
-    MARATHON, //All 300 questions, track total time
-    LIGHTNING, //10 seconds per questions (strict)
-    PRACTICE //No pressure, see correct answers
 };
 
 //==================
@@ -67,6 +55,7 @@ private:
     int currentStreak;     // Consecutive correct (resets on wrong)
     int bestStreak;        // Highest streak this session
     int totalBonusPoints;  // Speed bonus points
+    int currentHintLevel;  // Current hint level for current question (1, 2, or 3)
 
     //=== SETTINGS ===
     int totalQuestionsToAsk;      // How many to ask (50-300)
@@ -82,6 +71,9 @@ private:
     //=== GAME MODE OBJECTS ===
     GlobalTimer globalTimer; //Quick Attack  - 5 min count down
     Lives lives; //Survival mode 3 lives game over at 0;
+
+    //=== STATISTICS ===
+    Statistics stats;  // Track performance across sessions
 
 public:
     //=== SETUP ===
@@ -103,6 +95,7 @@ public:
     void show_game_mode_menu(); //Display game mode selection
     void configure_game();     // Interactive settings
     bool prompt_load_save();   // Ask to continue saved game (true if loaded)
+    void show_statistics_menu();  // View statistics submenu
 
     //=== SAVE/LOAD ===
     bool save_game(std::string filename);  // Save state (true if success)

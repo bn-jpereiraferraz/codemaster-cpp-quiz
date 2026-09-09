@@ -20,6 +20,11 @@ MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::v
 
 }
 
+// Constructor with hints
+MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat, std::string h1, std::string h2, std::string h3)
+    : Question(text, pts, cat, h1, h2, h3), options(opts), correctAnswer(correct) {
+}
+
 // Destructor
 MultipleChoiceQuestion::~MultipleChoiceQuestion() {
     // No manual cleanup needed

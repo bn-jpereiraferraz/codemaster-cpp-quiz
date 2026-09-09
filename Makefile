@@ -15,7 +15,8 @@ SOURCES = main.cpp \
           Lives.cpp \
           AsciiArt.cpp \
           GameModes.cpp \
-          QuizGame.cpp
+          QuizGame.cpp \
+          statistics.cpp
 
 HEADERS = ColorTheme.h \
           Question.h \
@@ -27,7 +28,9 @@ HEADERS = ColorTheme.h \
           Lives.h \
           AsciiArt.h \
           GameModes.h \
-          QuizGame.h
+          QuizGame.h \
+          Gamemode.h \
+          statistics.h
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

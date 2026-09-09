@@ -103,6 +103,9 @@ void GameModes::run_classic(QuizGame& game){
         // Display question
         q->display_boxed();
 
+        // Reset hint level for new question
+        game.currentHintLevel = 0;
+
         // Check if this is a Multiple Choice question (for 50/50)
         MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(q);
 
@@ -122,28 +125,42 @@ void GameModes::run_classic(QuizGame& game){
         while (true) {
             std::cout << ColorTheme::CYAN << "\nYour answer";
 
+            // Show hint shortcut
+            std::cout << ColorTheme::DIM << " (or 'hint'";
+
             // Show lifeline shortcuts
             if (game.lifelinesEnabled) {
-                std::cout << ColorTheme::DIM << " (or ";
                 if (game.lifelines.can_use_fifty_fifty() && mcq) {
-                    std::cout << "'5050' for 50/50";
+                    std::cout << ", '5050' for 50/50";
                 }
                 if (game.lifelines.can_use_skip()) {
-                    if (game.lifelines.can_use_fifty_fifty() && mcq) std::cout << ", ";
-                    std::cout << "'skip'";
+                    std::cout << ", 'skip'";
                 }
-                std::cout << ")";
             }
 
-            std::cout << ColorTheme::RESET << ": ";
+            std::cout << ")" << ColorTheme::RESET << ": ";
             std::getline(std::cin, answer);
 
             // Convert to lowercase for comparison
             std::string lowerAnswer = answer;
             for (char& c : lowerAnswer) c = tolower(c);
 
+            // Check for hint request
+            if (lowerAnswer == "hint" || lowerAnswer == "h") {
+                if (game.currentHintLevel < 3) {
+                    game.currentHintLevel++;
+                    std::cout << ColorTheme::YELLOW << "\n💡 Hint " << game.currentHintLevel << ": "
+                              << ColorTheme::RESET << q->get_hint(game.currentHintLevel)
+                              << std::endl;
+                    continue;  // Ask for answer again
+                } else {
+                    std::cout << ColorTheme::RED << "\n❌ No more hints available!"
+                              << ColorTheme::RESET << std::endl;
+                    continue;
+                }
+            }
             // Check for lifeline usage
-            if (lowerAnswer == "5050" && game.lifelines.can_use_fifty_fifty() && mcq) {
+            else if (lowerAnswer == "5050" && game.lifelines.can_use_fifty_fifty() && mcq) {
                 if (game.lifelines.use_fifty_fifty()) {
                     game.apply_fifty_fifty(mcq);
                     usedFiftyFifty = true;
@@ -282,6 +299,11 @@ void GameModes::run_classic(QuizGame& game){
         // Display final results
         game.display_results();
         game.display_achievements();
+
+        // Record game statistics
+        game.stats.record_game(game.currentGameMode, game.earnedScore, game.correctCount,
+                               game.filteredQuestions.size(), game.bestStreak);
+        game.stats.save_to_file("statistics.dat");
     }
 }
 
@@ -335,21 +357,44 @@ void GameModes::run_quick_attack(QuizGame& game){
             //Display Question
             currentQuestion->display_boxed();
 
+            // Reset hint level for new question
+            game.currentHintLevel = 0;
+
             //=== GET USER ANSWER ===
             std::string userAnswer;
             bool validInput = false;
 
             while (!validInput){
-                std::cout << ColorTheme::CYAN << "Your Answer: "
-                          << ColorTheme::RESET; 
-                    std::getline(std::cin, userAnswer);
+                std::cout << ColorTheme::CYAN << "Your Answer";
+                std::cout << ColorTheme::DIM << " (or 'hint')" << ColorTheme::RESET << ": ";
+                std::getline(std::cin, userAnswer);
+
+                // Convert to lowercase for hint check
+                std::string lowerAnswer = userAnswer;
+                std::transform(lowerAnswer.begin(), lowerAnswer.end(),
+                               lowerAnswer.begin(), ::tolower);
+
+                // Check for hint request
+                if (lowerAnswer == "hint" || lowerAnswer == "h") {
+                    if (game.currentHintLevel < 3) {
+                        game.currentHintLevel++;
+                        std::cout << ColorTheme::YELLOW << "\n💡 Hint " << game.currentHintLevel << ": "
+                                  << ColorTheme::RESET << currentQuestion->get_hint(game.currentHintLevel)
+                                  << std::endl;
+                        continue;
+                    } else {
+                        std::cout << ColorTheme::RED << "\n❌ No more hints available!"
+                                  << ColorTheme::RESET << std::endl;
+                        continue;
+                    }
+                }
 
                 //Check if MC or TF
                 MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(currentQuestion);
 
                 if (mcq){
                     //Multiple choice, A B C D
-                    if (userAnswer.length() == 1 && (userAnswer[0] == 'A' || 
+                    if (userAnswer.length() == 1 && (userAnswer[0] == 'A' ||
                     userAnswer[0] == 'a' || userAnswer[0] == 'B' ||
                     userAnswer[0] == 'b' || userAnswer[0] == 'C' ||
                     userAnswer[0] == 'c' || userAnswer[0] == 'D' ||
@@ -358,7 +403,6 @@ void GameModes::run_quick_attack(QuizGame& game){
                     }
                 }else{
                     //True/False quesitons
-                    std::string lowerAnswer = userAnswer;
                     std::transform(lowerAnswer.begin(), lowerAnswer.end(),
                                         lowerAnswer.begin(), ::tolower);
                     if(lowerAnswer == "true" || lowerAnswer == "false"){
@@ -414,6 +458,11 @@ void GameModes::run_quick_attack(QuizGame& game){
         // Decent attempt - show full results
         game.display_results();
         game.display_achievements();
+
+        // Record game statistics
+        game.stats.record_game(game.currentGameMode, game.earnedScore, game.correctCount,
+                               questionsAnswered, game.bestStreak);
+        game.stats.save_to_file("statistics.dat");
     } else {
         // Too few questions - encouraging message
         std::cout << "\n" << ColorTheme::CYAN
@@ -482,6 +531,9 @@ void GameModes::run_survival(QuizGame& game){
         //Display Question
         currentQuestion->display_boxed();
 
+        // Reset hint level for new question
+        game.currentHintLevel = 0;
+
         //=== START TIMER IF ENABLED ===
         Timer questionTimer(game.questionTimeLimit);
         if (game.timerEnabled) {
@@ -496,8 +548,29 @@ void GameModes::run_survival(QuizGame& game){
 
         while (!validInput)
         {
-            std::cout << ColorTheme::CYAN << "Your Answer: " << ColorTheme::RESET;
+            std::cout << ColorTheme::CYAN << "Your Answer";
+            std::cout << ColorTheme::DIM << " (or 'hint')" << ColorTheme::RESET << ": ";
             std::getline(std::cin, userAnswer);
+
+            // Convert to lowercase for hint check
+            std::string lowerAnswer = userAnswer;
+            std::transform(lowerAnswer.begin(), lowerAnswer.end(),
+                           lowerAnswer.begin(), ::tolower);
+
+            // Check for hint request
+            if (lowerAnswer == "hint" || lowerAnswer == "h") {
+                if (game.currentHintLevel < 3) {
+                    game.currentHintLevel++;
+                    std::cout << ColorTheme::YELLOW << "\n💡 Hint " << game.currentHintLevel << ": "
+                              << ColorTheme::RESET << currentQuestion->get_hint(game.currentHintLevel)
+                              << std::endl;
+                    continue;
+                } else {
+                    std::cout << ColorTheme::RED << "\n❌ No more hints available!"
+                              << ColorTheme::RESET << std::endl;
+                    continue;
+                }
+            }
 
             //Check if MC or TF
             MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(currentQuestion);
@@ -511,9 +584,6 @@ void GameModes::run_survival(QuizGame& game){
                                                 }
             }else{
               //True/False
-              std::string lowerAnswer = userAnswer;
-              std::transform(lowerAnswer.begin(), lowerAnswer.end(),
-                                lowerAnswer.begin(), ::tolower);
                     if(lowerAnswer == "true" || lowerAnswer == "false"){
                         validInput = true;
                     }  
@@ -619,6 +689,11 @@ void GameModes::run_survival(QuizGame& game){
         // Full results for successful completion
         game.display_results();
         game.display_achievements();
+
+        // Record game statistics
+        game.stats.record_game(game.currentGameMode, game.earnedScore, game.correctCount,
+                               game.currentQuestionIndex, game.bestStreak);
+        game.stats.save_to_file("statistics.dat");
     }
 
 
@@ -681,6 +756,9 @@ void GameModes::run_marathon(QuizGame& game){
         //Display Question
         currentQuestion->display_boxed();
 
+        // Reset hint level for new question
+        game.currentHintLevel = 0;
+
         //=== START TIMER IF ENABLED ===
         Timer questionTimer(game.questionTimeLimit);
         if (game.timerEnabled) {
@@ -694,8 +772,29 @@ void GameModes::run_marathon(QuizGame& game){
         bool validInput = false;
 
         while(!validInput){
-            std::cout << ColorTheme::CYAN << "Your Answer: " << ColorTheme::RESET;
+            std::cout << ColorTheme::CYAN << "Your Answer";
+            std::cout << ColorTheme::DIM << " (or 'hint')" << ColorTheme::RESET << ": ";
             std::getline(std::cin, userAnswer);
+
+            // Convert to lowercase for hint check
+            std::string lowerAnswer = userAnswer;
+            std::transform(lowerAnswer.begin(), lowerAnswer.end(),
+                           lowerAnswer.begin(), ::tolower);
+
+            // Check for hint request
+            if (lowerAnswer == "hint" || lowerAnswer == "h") {
+                if (game.currentHintLevel < 3) {
+                    game.currentHintLevel++;
+                    std::cout << ColorTheme::YELLOW << "\n💡 Hint " << game.currentHintLevel << ": "
+                              << ColorTheme::RESET << currentQuestion->get_hint(game.currentHintLevel)
+                              << std::endl;
+                    continue;
+                } else {
+                    std::cout << ColorTheme::RED << "\n❌ No more hints available!"
+                              << ColorTheme::RESET << std::endl;
+                    continue;
+                }
+            }
 
             //Check if MC or TF
             MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(currentQuestion);
@@ -704,13 +803,10 @@ void GameModes::run_marathon(QuizGame& game){
                                                 userAnswer[0] == 'B' || userAnswer[0] == 'b' ||
                                                 userAnswer[0] == 'C' || userAnswer[0] == 'c' ||
                                                 userAnswer[0] == 'D' || userAnswer[0] == 'd' )){
-                            validInput = true;                                
+                            validInput = true;
                     }
             }else{
                 //True/False
-                std::string lowerAnswer = userAnswer;
-                std::transform(lowerAnswer.begin(), lowerAnswer.end(),
-                                lowerAnswer.begin(), ::tolower);
                 if (lowerAnswer == "true" || lowerAnswer == "false"){
                     validInput = true;
                 }
@@ -810,6 +906,11 @@ void GameModes::run_marathon(QuizGame& game){
     //Display Results
     game.display_results();
     game.display_achievements();
+
+    // Record game statistics
+    game.stats.record_game(game.currentGameMode, game.earnedScore, game.correctCount,
+                           game.filteredQuestions.size(), game.bestStreak);
+    game.stats.save_to_file("statistics.dat");
 }
 
 //=========================================
@@ -866,6 +967,9 @@ void GameModes::run_lightning(QuizGame& game){
         //Display Question
         currentQuestion->display_boxed();
 
+        // Reset hint level for new question
+        game.currentHintLevel = 0;
+
         //=== START STRICT TIMER ===
         Timer questionTimer(LIGHTNING_TIME_LIMIT);
         questionTimer.start();
@@ -888,8 +992,29 @@ void GameModes::run_lightning(QuizGame& game){
                 break;
             }
 
-            std::cout << ColorTheme::CYAN << "Your Answer: " << ColorTheme::RESET;
+            std::cout << ColorTheme::CYAN << "Your Answer";
+            std::cout << ColorTheme::DIM << " (or 'hint')" << ColorTheme::RESET << ": ";
             std::getline(std::cin, userAnswer);
+
+            // Convert to lowercase for hint check
+            std::string lowerAnswer = userAnswer;
+            std::transform(lowerAnswer.begin(), lowerAnswer.end(),
+                           lowerAnswer.begin(), ::tolower);
+
+            // Check for hint request
+            if (lowerAnswer == "hint" || lowerAnswer == "h") {
+                if (game.currentHintLevel < 3) {
+                    game.currentHintLevel++;
+                    std::cout << ColorTheme::YELLOW << "\n💡 Hint " << game.currentHintLevel << ": "
+                              << ColorTheme::RESET << currentQuestion->get_hint(game.currentHintLevel)
+                              << std::endl;
+                    continue;
+                } else {
+                    std::cout << ColorTheme::RED << "\n❌ No more hints available!"
+                              << ColorTheme::RESET << std::endl;
+                    continue;
+                }
+            }
 
             //Check if MC or TF
             MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*> (currentQuestion);
@@ -900,14 +1025,10 @@ void GameModes::run_lightning(QuizGame& game){
                                                  userAnswer[0] == 'B' || userAnswer[0] == 'b' ||
                                                  userAnswer[0] == 'C' || userAnswer[0] == 'c' ||
                                                  userAnswer[0] == 'D' || userAnswer[0] == 'd')){
-                                        validInput = true;                
+                                        validInput = true;
                         }
             }else{
                 //True/False
-                std::string lowerAnswer = userAnswer;
-                std::transform(lowerAnswer.begin(), lowerAnswer.end(),
-                                lowerAnswer.begin(), ::tolower);
-
                 if(lowerAnswer == "true" || lowerAnswer == "false"){
                     validInput = true;
                 }
@@ -983,6 +1104,11 @@ void GameModes::run_lightning(QuizGame& game){
         // Decent performance - show full results
         game.display_results();
         game.display_achievements();
+
+        // Record game statistics
+        game.stats.record_game(game.currentGameMode, game.earnedScore, game.correctCount,
+                               questionsAnswered, game.bestStreak);
+        game.stats.save_to_file("statistics.dat");
     }
 }
 
@@ -1042,13 +1168,37 @@ void GameModes::run_practice(QuizGame& game){
         //Display Question
         currentQuestion->display_boxed();
 
+        // Reset hint level for new question
+        game.currentHintLevel = 0;
+
         //=== GET USER ANSWER ===
         std::string userAnswer;
         bool validInput = false;
 
         while(!validInput){
-            std::cout << ColorTheme::CYAN << "Your Answer: " << ColorTheme::RESET;
+            std::cout << ColorTheme::CYAN << "Your Answer";
+            std::cout << ColorTheme::DIM << " (or 'hint')" << ColorTheme::RESET << ": ";
             std::getline(std::cin, userAnswer);
+
+            // Convert to lowercase for hint check
+            std::string lowerAnswer = userAnswer;
+            std::transform(lowerAnswer.begin(), lowerAnswer.end(),
+                           lowerAnswer.begin(), ::tolower);
+
+            // Check for hint request
+            if (lowerAnswer == "hint" || lowerAnswer == "h") {
+                if (game.currentHintLevel < 3) {
+                    game.currentHintLevel++;
+                    std::cout << ColorTheme::YELLOW << "\n💡 Hint " << game.currentHintLevel << ": "
+                              << ColorTheme::RESET << currentQuestion->get_hint(game.currentHintLevel)
+                              << std::endl;
+                    continue;
+                } else {
+                    std::cout << ColorTheme::RED << "\n❌ No more hints available!"
+                              << ColorTheme::RESET << std::endl;
+                    continue;
+                }
+            }
 
             //Check if MC or TF
             MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(currentQuestion);
@@ -1061,9 +1211,6 @@ void GameModes::run_practice(QuizGame& game){
                      }
             }else{
                 //True / False
-                std::string lowerAnswer = userAnswer;
-                std::transform(lowerAnswer.begin(), lowerAnswer.end(),
-                                lowerAnswer.begin(), ::tolower);
                 if(lowerAnswer == "true" || lowerAnswer == "false"){
                     validInput = true;
                 }
@@ -1120,5 +1267,10 @@ void GameModes::run_practice(QuizGame& game){
 
     //Display Results
     game.display_results();
-    game.display_achievements();    
+    game.display_achievements();
+
+    // Record game statistics
+    game.stats.record_game(game.currentGameMode, game.earnedScore, game.correctCount,
+                           game.filteredQuestions.size(), game.bestStreak);
+    game.stats.save_to_file("statistics.dat");
 }

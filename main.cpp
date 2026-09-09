@@ -70,7 +70,11 @@
                   game.configure_game();
                   break;
 
-              case 3:  // Exit
+              case 3:  // View Statistics
+                  game.show_statistics_menu();
+                  break;
+
+              case 4:  // Exit
                   std::cout << ColorTheme::GREEN << "\n👋 Thanks for playing!"
                             << ColorTheme::RESET << std::endl;
                   running = false;

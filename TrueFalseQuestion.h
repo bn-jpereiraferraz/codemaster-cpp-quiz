@@ -14,6 +14,7 @@ private:
 public:
     TrueFalseQuestion(std::string text, int pts, bool correct);
     TrueFalseQuestion(std::string text, int pts, bool correct, std::string cat);
+    TrueFalseQuestion(std::string text, int pts, bool correct, std::string cat, std::string h1, std::string h2, std::string h3);
     ~TrueFalseQuestion();
 
     void display() override;

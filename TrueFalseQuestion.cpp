@@ -19,6 +19,11 @@ TrueFalseQuestion::TrueFalseQuestion(std::string text, int pts, bool correct, st
 
 }
 
+// Constructor with hints
+TrueFalseQuestion::TrueFalseQuestion(std::string text, int pts, bool correct, std::string cat, std::string h1, std::string h2, std::string h3)
+    : Question(text, pts, cat, h1, h2, h3), correctAnswer(correct) {
+}
+
 // Destructor
 TrueFalseQuestion::~TrueFalseQuestion() {
     // No manual cleanup needed

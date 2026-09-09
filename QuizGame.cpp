@@ -15,12 +15,13 @@
 
 //Constructor - initializes the game with 0 points
 QuizGame::QuizGame()
-    :totalScore(0), 
-     earnedScore(0), 
-     correctCount(0), 
-     currentStreak(0), 
+    :totalScore(0),
+     earnedScore(0),
+     correctCount(0),
+     currentStreak(0),
      bestStreak(0),
      totalBonusPoints(0),               //Initialize bonus points
+     currentHintLevel(0),               //No hints used yet
      currentQuestionIndex(0),           //Start at first question
      totalQuestionsToAsk(300),          //Default to all questions
      selectedDifficulty(MIXED),         //Default to all difficulties
@@ -29,11 +30,13 @@ QuizGame::QuizGame()
      lifelinesEnabled(false),            //Lifelines off by default
      currentGameMode(CLASSIC),           //Default Classic Mode
      globalTimer(300),                   //5 minutes for Quickattack
-     lives(3)                            //3 lives for survival 
+     lives(3)                            //3 lives for survival
     {
         //Initializer list sets both scores to 0
         //The questions vector is automatically initialized(empty)
-        //No code needed in the body - initializer list did everything
+
+        // Load statistics from file
+        stats.load_from_file("statistics.dat");
     }
 
 //Destructor - Critical for Memory Management
@@ -322,9 +325,9 @@ Question* QuizGame::parse_question_line(std::string line){
 
     //Parse multiple Choice questions
     if (type == "MC"){
-        //Example: MC|OOP|What is X?|10|o1,o2,o3,o4|A
-        //              ^   ^        ^  ^           ^
-        //         firstPipe pos2   pos4 pos6      pos8
+        //Example: MC|OOP|What is X?|10|o1,o2,o3,o4|A|hint1|hint2|hint3
+        //              ^   ^        ^  ^           ^ ^     ^     ^
+        //         firstPipe pos2   pos4 pos6      pos8   pos10 pos12
 
         //Extract category (between 1st and 2nd Pipe)
         size_t pos1 = firstPipe + 1; //Start after first'|'
@@ -346,9 +349,24 @@ Question* QuizGame::parse_question_line(std::string line){
         size_t pos8 = line.find('|', pos7);
         std::string optionsStr = line.substr(pos7, pos8 - pos7);
 
-        //Extract correct answer (everything after 5th pipe)
-        std::string answer = line.substr(pos8 + 1);
+        //Extract correct answer (between 5th and 6th pipe)
+        size_t pos9 = pos8 + 1;
+        size_t pos10 = line.find('|', pos9);
+        std::string answer = line.substr(pos9, pos10 - pos9);
         char correctAnswer = answer[0]; //First character is the answer;
+
+        //Extract hint1 (between 6th and 7th pipe)
+        size_t pos11 = pos10 + 1;
+        size_t pos12 = line.find('|', pos11);
+        std::string hint1 = line.substr(pos11, pos12 - pos11);
+
+        //Extract hint2 (between 7th and 8th pipe)
+        size_t pos13 = pos12 + 1;
+        size_t pos14 = line.find('|', pos13);
+        std::string hint2 = line.substr(pos13, pos14 - pos13);
+
+        //Extract hint3 (everything after 8th pipe)
+        std::string hint3 = line.substr(pos14 + 1);
 
         //Parse comma-seperated options into a vector
         // ex: op1,op2,op3,op4 -> {"op1", "op2", "op3", "op4"}
@@ -366,14 +384,14 @@ Question* QuizGame::parse_question_line(std::string line){
         //add last option
         options.push_back(optionsStr.substr(start));
 
-        //Create and return new MultipleChoiceQuestion object WITH CATEGORY
-        return new MultipleChoiceQuestion(questionText, points, options, correctAnswer, category);
+        //Create and return new MultipleChoiceQuestion object WITH CATEGORY AND HINTS
+        return new MultipleChoiceQuestion(questionText, points, options, correctAnswer, category, hint1, hint2, hint3);
     }
     else if(type == "TF"){
         //Parse True/False Questions
-        //Example: TF|Basics|C++ is case-sensitive|5|true
-        //             ^      ^                   ^ ^
-        //        firstPipe  pos2               pos4 pos6
+        //Example: TF|Basics|C++ is case-sensitive|5|true|hint1|hint2|hint3
+        //             ^      ^                   ^ ^    ^     ^     ^
+        //        firstPipe  pos2               pos4 pos6  pos8  pos10
 
         //Extract category (between 1st and 2nd Pipe)
         size_t pos1 = firstPipe + 1;
@@ -390,13 +408,28 @@ Question* QuizGame::parse_question_line(std::string line){
         size_t pos6 = line.find('|', pos5);
         int points = std::stoi(line.substr(pos5, pos6 - pos5));
 
-        //Extract Answer (everything after 4th pipe)
-        std::string answerStr = line.substr(pos6 + 1);
+        //Extract Answer (between 4th and 5th pipe)
+        size_t pos7 = pos6 + 1;
+        size_t pos8 = line.find('|', pos7);
+        std::string answerStr = line.substr(pos7, pos8 - pos7);
         //Convert string to bool
         bool correctAnswer = (answerStr == "true" || answerStr == "True" || answerStr == "TRUE");
 
-        //Create and return new TrueFalseQuestion object WITH CATEGORY
-        return new TrueFalseQuestion(questionText, points, correctAnswer, category);
+        //Extract hint1 (between 5th and 6th pipe)
+        size_t pos9 = pos8 + 1;
+        size_t pos10 = line.find('|', pos9);
+        std::string hint1 = line.substr(pos9, pos10 - pos9);
+
+        //Extract hint2 (between 6th and 7th pipe)
+        size_t pos11 = pos10 + 1;
+        size_t pos12 = line.find('|', pos11);
+        std::string hint2 = line.substr(pos11, pos12 - pos11);
+
+        //Extract hint3 (everything after 7th pipe)
+        std::string hint3 = line.substr(pos12 + 1);
+
+        //Create and return new TrueFalseQuestion object WITH CATEGORY AND HINTS
+        return new TrueFalseQuestion(questionText, points, correctAnswer, category, hint1, hint2, hint3);
     }
     return nullptr; //Unknown question type
 }
@@ -677,11 +710,14 @@ void QuizGame::show_main_menu(){
     std::cout << ColorTheme::GREEN << "    ▸ " << ColorTheme::BOLD << "[1]"
              << ColorTheme::RESET << ColorTheme::GREEN << " Start New Quiz"
             << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::YELLOW << "    ▸ " << ColorTheme::BOLD << "[2]" 
+    std::cout << ColorTheme::YELLOW << "    ▸ " << ColorTheme::BOLD << "[2]"
              << ColorTheme::RESET << ColorTheme::YELLOW << " Configure Settings"
              << ColorTheme::RESET << std::endl;
-    std::cout << ColorTheme::RED << "    ▸ " << ColorTheme::BOLD << "[3]"
-              << ColorTheme::RESET << ColorTheme::RED << "Exit Game"
+    std::cout << ColorTheme::CYAN << "    ▸ " << ColorTheme::BOLD << "[3]"
+              << ColorTheme::RESET << ColorTheme::CYAN << " View Statistics 📊"
+              << ColorTheme::RESET << std::endl;
+    std::cout << ColorTheme::RED << "    ▸ " << ColorTheme::BOLD << "[4]"
+              << ColorTheme::RESET << ColorTheme::RED << " Exit Game"
               << ColorTheme::RESET << std::endl;
     std::cout << "\n";
     ColorTheme::print_separator();
@@ -1143,3 +1179,134 @@ bool QuizGame::load_game(std::string filename) {
 }
 
 
+//==============================
+// STATISTICS MENU
+//==============================
+void QuizGame::show_statistics_menu() {
+    while (true) {
+        std::cout << "\n\n";
+        ColorTheme::print_separator();
+        ColorTheme::print_separator();
+
+        // Title
+        std::cout << ColorTheme::CYAN << ColorTheme::BOLD;
+        std::cout << "\n";
+        std::cout << "    ╔═══════════════════════════════════════╗\n";
+        std::cout << "    ║                                       ║\n";
+        std::cout << "    ║        📊 STATISTICS MENU 📊          ║\n";
+        std::cout << "    ║                                       ║\n";
+        std::cout << "    ╚═══════════════════════════════════════╝\n";
+        std::cout << ColorTheme::RESET << "\n";
+
+        // Options
+        std::cout << ColorTheme::GREEN << "    ▸ " << ColorTheme::BOLD << "[1]"
+                  << ColorTheme::RESET << ColorTheme::GREEN << " Career Statistics"
+                  << ColorTheme::RESET << std::endl;
+        std::cout << ColorTheme::YELLOW << "    ▸ " << ColorTheme::BOLD << "[2]"
+                  << ColorTheme::RESET << ColorTheme::YELLOW << " Mode Statistics"
+                  << ColorTheme::RESET << std::endl;
+        std::cout << ColorTheme::CYAN << "    ▸ " << ColorTheme::BOLD << "[3]"
+                  << ColorTheme::RESET << ColorTheme::CYAN << " Category Performance"
+                  << ColorTheme::RESET << std::endl;
+        std::cout << ColorTheme::MAGENTA << "    ▸ " << ColorTheme::BOLD << "[4]"
+                  << ColorTheme::RESET << ColorTheme::MAGENTA << " High Scores"
+                  << ColorTheme::RESET << std::endl;
+        std::cout << ColorTheme::RED << "    ▸ " << ColorTheme::BOLD << "[5]"
+                  << ColorTheme::RESET << ColorTheme::RED << " Back to Main Menu"
+                  << ColorTheme::RESET << std::endl;
+
+        std::cout << "\n";
+        ColorTheme::print_separator();
+
+        // Get user choice
+        std::cout << ColorTheme::YELLOW << "\n👉 Enter your choice (1-5): " << ColorTheme::RESET;
+        int choice;
+        std::cin >> choice;
+
+        // Handle invalid input
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << ColorTheme::RED << "❌ Invalid input! Please enter a number 1-5.\n" << ColorTheme::RESET;
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                // Career statistics
+                stats.display_career_stats();
+                std::cout << ColorTheme::DIM << "\nPress Enter to continue..." << ColorTheme::RESET;
+                std::cin.ignore();
+                std::cin.get();
+                break;
+
+            case 2: {
+                // Mode statistics
+                std::cout << ColorTheme::CYAN << "\n📊 Select Mode:\n" << ColorTheme::RESET;
+                std::cout << "  [1] Classic\n";
+                std::cout << "  [2] Quick Attack\n";
+                std::cout << "  [3] Survival\n";
+                std::cout << "  [4] Marathon\n";
+                std::cout << "  [5] Lightning\n";
+                std::cout << "  [6] Practice\n";
+                std::cout << ColorTheme::YELLOW << "\n👉 Choose mode (1-6): " << ColorTheme::RESET;
+
+                int modeChoice;
+                std::cin >> modeChoice;
+
+                if (modeChoice >= 1 && modeChoice <= 6) {
+                    stats.display_mode_stats(static_cast<Gamemode>(modeChoice - 1));
+                } else {
+                    std::cout << ColorTheme::RED << "❌ Invalid mode!\n" << ColorTheme::RESET;
+                }
+
+                std::cout << ColorTheme::DIM << "\nPress Enter to continue..." << ColorTheme::RESET;
+                std::cin.ignore();
+                std::cin.get();
+                break;
+            }
+
+            case 3:
+                // Category performance
+                stats.display_category_stats();
+                std::cout << ColorTheme::DIM << "\nPress Enter to continue..." << ColorTheme::RESET;
+                std::cin.ignore();
+                std::cin.get();
+                break;
+
+            case 4: {
+                // High scores
+                std::cout << ColorTheme::CYAN << "\n🏆 Select Mode:\n" << ColorTheme::RESET;
+                std::cout << "  [1] Classic\n";
+                std::cout << "  [2] Quick Attack\n";
+                std::cout << "  [3] Survival\n";
+                std::cout << "  [4] Marathon\n";
+                std::cout << "  [5] Lightning\n";
+                std::cout << "  [6] Practice\n";
+                std::cout << ColorTheme::YELLOW << "\n👉 Choose mode (1-6): " << ColorTheme::RESET;
+
+                int modeChoice;
+                std::cin >> modeChoice;
+
+                if (modeChoice >= 1 && modeChoice <= 6) {
+                    stats.display_high_scores(static_cast<Gamemode>(modeChoice - 1));
+                } else {
+                    std::cout << ColorTheme::RED << "❌ Invalid mode!\n" << ColorTheme::RESET;
+                }
+
+                std::cout << ColorTheme::DIM << "\nPress Enter to continue..." << ColorTheme::RESET;
+                std::cin.ignore();
+                std::cin.get();
+                break;
+            }
+
+            case 5:
+                // Back to main menu
+                return;
+
+            default:
+                std::cout << ColorTheme::RED << "❌ Invalid choice! Please select 1-5.\n" << ColorTheme::RESET;
+                break;
+        }
+    }
+}
