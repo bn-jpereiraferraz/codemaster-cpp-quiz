@@ -1,16 +1,14 @@
-# Compiled executables
-quiz
-*.out
-*.exe
-
-# Object files
+# Build artifacts
+build/
 *.o
-*.obj
-
-# Compiler-generated files
 *.d
+quiz
 
-# IDE/Editor files
+# Save files (optional)
+# saves/*.dat
+# !saves/.gitkeep
+
+# IDE files
 .vscode/
 .idea/
 *.swp
@@ -21,21 +19,23 @@ quiz
 .DS_Store
 Thumbs.db
 
-# Temporary files
-*.tmp
-*.log
-
 # Backup files
 *.bak
-*~
+*.backup
 
-# Save files
-savegame.dat
-*.o
+# CMake
+CMakeCache.txt
+CMakeFiles/
 
-# Old monolithic files (kept as backup, not tracked)
-quiz.h
-quiz.cpp
-# Temporary verification files
-VERIFICATION_REPORT.md
-CMakeFiles/CMakeSystem.cmake
+# Archive (old files)
+archive/
+docs/ULTIMATE_REFACTORING_PLAN.md
+.gitignore
+docs/RESTRUCTURING_COMPLETE.md
+.gitignore
+docs/REFACTORING_PLAN.md
+.gitignore
+docs/PROJECT_STRUCTURE.md
+docs/PROJECT_READY.md
+docs/IMPLEMENTATION_TRACKER.md
+docs/COMPREHENSIVE_REFACTORING_PLAN.md
