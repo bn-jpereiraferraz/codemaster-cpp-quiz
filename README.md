@@ -674,13 +674,5 @@ Refer to [CODE_REVIEW_REPORT.md](CODE_REVIEW_REPORT.md) for detailed improvement
 
 ---
 
-## License
-
-This project is licensed under the MIT License. See LICENSE file for details.
-
----
-
-**Last Updated:** October 5, 2026  
-**Maintained By:** Project Contributors  
+**Last Updated:** October 5, 2026   
 **Build Status:** Passing  
-**Code Coverage:** Not implemented (planned)
