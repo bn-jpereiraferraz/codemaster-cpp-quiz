@@ -1,13 +1,25 @@
 #ifndef QUESTIONPROCESSOR_H
 #define QUESTIONPROCESSOR_H
+#include "models/Question.h"
+#include <vector>
+#include <string>
 
-/**
- * Question processing logic
- * TODO: Implement this class/struct
- */
+class QuestionProcessor {
+public:
+    //Shuffle questions randomly
+    static void shuffle_questions(std::vector<Question*>& questions);
 
-// TODO: Add includes here
+    //Filter by difficulty
+    static std::vector<Question*> filter_by_difficulty(const std::vector<Question*>& questions, const std::string& difficulty);
 
-// TODO: Add class/struct definition here
+    //Filter by Category
+    static std::vector<Question*> filter_by_category(const std::vector<Question*>& questions, const std::string& category);
+
+    //Select N random questions
+    static std::vector<Question*> select_random(const std::vector<Question*>& questions, int count);
+
+    //Sort questions by difficulty
+    static void sort_by_difficulty(std::vector<Question*>& questions);
+};
 
 #endif // QUESTIONPROCESSOR_H

@@ -1,9 +1,7 @@
 #ifndef GAMEMODES_H
 #define GAMEMODES_H
 
-//Forward declaration - tells compiler QuizGame exists
-//We don't need full definition, just the name;
-class QuizGame; 
+#include "core/IGameState.h" 
 
 
 //==================
@@ -23,17 +21,14 @@ class QuizGame;
 //-Private helper Methods
 
 class GameModes{
-
-    //=== MODE IMPLEMENTATIONS ===
-    //Each methods implements one complete game mode
-    //Parameter: QuizGame& game - reference to the game instance
 public:
-    static void run_classic(QuizGame& game); //Classic: configurable gameplay
-    static void run_quick_attack(QuizGame& game); //Quick Attack
-    static void run_survival(QuizGame& game); //Survival 3 lives
-    static void run_marathon(QuizGame& game); //Marathon: all questions
-    static void run_lightning(QuizGame& game); //Lightning round
-    static void run_practice(QuizGame& game); //Practice: no pressure
+    // All methods now use IGameState interface instead of QuizGame direct access
+    static void run_classic(IGameState& game);
+    static void run_quick_attack(IGameState& game);
+    static void run_survival(IGameState& game);
+    static void run_marathon(IGameState& game);
+    static void run_lightning(IGameState& game);
+    static void run_practice(IGameState& game);
 };
 
 #endif

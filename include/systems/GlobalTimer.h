@@ -1,30 +1,37 @@
 #ifndef GLOBALTIMER_H
 #define GLOBALTIMER_H
 #include <chrono>
+
 //==============================================
-//GLOBAL COUNTDOWN TIMER - For Quick Attack Mode
+// GLOBAL TIMER - Session-Wide Countdown Timer
 //==============================================
-/*
-Unlike Timer(which tracks the time we need per question),
-GlobalTimer is a session wide countdown from a starting value
-
-Key Features:
--Starts at a specified duration(300 seconds = 5 minutes)
--Counts down to zero
--Supports penalties
--Checks if time has run out
-
-Usage: 
-GlobalTimer timer(300); //5 min
-timer.start();
-
-//Wrong answer? Deduct 15 seconds
-timer.apply_penalty(15);
-
-if (timer.is_time:up())
-    //Game Over!
-==================================================
-*/
+// Purpose: Track TOTAL time for entire game session with penalty system
+//
+// Key Differences from Timer:
+// - Timer:       Per-question countdown (30s for THIS question)
+// - GlobalTimer: Session-wide countdown (5min TOTAL for entire quiz)
+//
+// Key Features:
+// - Session-level countdown (starts at X minutes, counts to 0)
+// - Penalty system (wrong answer = deduct time)
+// - Used in Quick Attack mode and similar time-pressure modes
+//
+// Usage Example:
+//   GlobalTimer sessionTimer(300);  // 5 minutes TOTAL for quiz
+//   sessionTimer.start();
+//
+//   // Player gets question wrong
+//   sessionTimer.apply_penalty(15);  // -15 seconds from total time
+//
+//   if (sessionTimer.is_time_up()) {
+//       // Game Over! Total time expired
+//   }
+//
+// Why Both Timer and GlobalTimer Exist:
+// - Some modes need per-question timers (Lightning: 10s each)
+// - Some modes need session timers with penalties (Quick Attack: 5min total)
+// - Some modes need BOTH (timed questions within a session limit)
+//==============================================
 
 class GlobalTimer{
     

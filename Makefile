@@ -4,7 +4,7 @@
 
 # Compiler settings
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++11 -Iinclude
+CXXFLAGS = -Wall -Wextra -std=c++14 -Iinclude
 LDFLAGS = -lm
 
 # Directories

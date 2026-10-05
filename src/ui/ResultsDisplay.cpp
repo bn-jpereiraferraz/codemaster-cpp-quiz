@@ -3,7 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
-void ResultsDisplay::show_results(const ResultsSummary& results, Gamemode mode){
+void ResultsDisplay::show_results(const ResultsSummary& results, Gamemode /* mode */){
+    // mode parameter reserved for future mode-specific display customization
     std::cout << "\n\n";
     ColorTheme::print_separator();
     ColorTheme::print_separator();

@@ -38,7 +38,7 @@ void AchievementDisplay::show_unlocked_achievements(const std::vector<Achievemen
     }
 }
 
-void AchievementDisplay::show_unlock_notfication(const Achievement& achievement){
+void AchievementDisplay::show_unlock_notification(const Achievement& achievement){
     std::cout << "\n";
     ColorTheme::print_separator();
     std::cout << ColorTheme::YELLOW << ColorTheme::BOLD;

@@ -1,100 +1,79 @@
 #include "models/MultipleChoiceQuestion.h"
-#include "ui/ColorTheme.h"
-#include <iostream>
+#include "ui/QuestionRenderer.h"
 #include <cctype>
+#include <algorithm>
 
 //=====================================
 // CHILD CLASS 1: MultipleChoiceQuestion
 //=====================================
 
-// Constructor - calls parent constructor, then initializes child members
-MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct)
-    : Question(text, pts, "General"),      // Call parent constructor first
-      options(opts),            // Initialize options vector
-      correctAnswer(correct) {  // Initialize correctAnswer
-    // Constructor body (empty - initializer list did everything)
+MultipleChoiceQuestion::MultipleChoiceQuestion(const std::string& text, int pts,
+                                              const std::vector<std::string>& opts, char correct)
+    : Question(text, pts, "General"),
+      options(opts),
+      correctAnswer(std::toupper(correct)) {
 }
 
-MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat)
-    : Question(text, pts, cat), options(opts), correctAnswer(correct){
-
+MultipleChoiceQuestion::MultipleChoiceQuestion(const std::string& text, int pts,
+                                              const std::vector<std::string>& opts,
+                                              char correct, const std::string& cat)
+    : Question(text, pts, cat),
+      options(opts),
+      correctAnswer(std::toupper(correct)) {
 }
 
-// Constructor with hints
-MultipleChoiceQuestion::MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat, std::string h1, std::string h2, std::string h3)
-    : Question(text, pts, cat, h1, h2, h3), options(opts), correctAnswer(correct) {
+MultipleChoiceQuestion::MultipleChoiceQuestion(const std::string& text, int pts,
+                                              const std::vector<std::string>& opts,
+                                              char correct, const std::string& cat,
+                                              const std::string& h1, const std::string& h2,
+                                              const std::string& h3)
+    : Question(text, pts, cat, h1, h2, h3),
+      options(opts),
+      correctAnswer(std::toupper(correct)) {
 }
 
-// Destructor
-MultipleChoiceQuestion::~MultipleChoiceQuestion() {
-    // No manual cleanup needed
-    // vector<string> automatically cleans itself up
+MultipleChoiceQuestion::MultipleChoiceQuestion(const std::string& cat, const std::string& diff,
+                                              const std::string& text,
+                                              const std::vector<std::string>& opts,
+                                              const std::string& ans, int pts,
+                                              const std::string& h1, const std::string& h2,
+                                              const std::string& h3)
+    : Question(cat, diff, text, pts, h1, h2, h3),
+      options(opts),
+      correctAnswer(ans.empty() ? 'A' : std::toupper(ans[0])) {
 }
 
-// Display the question and options
-void MultipleChoiceQuestion::display() {
-    std::cout << "\n" << questionText << " (" << points << " points)" << std::endl;
+bool MultipleChoiceQuestion::check_answer(const std::string& answer) const {
+    if (answer.empty()) return false;
+    char userAnswer = std::toupper(answer[0]);
+    return userAnswer == correctAnswer;
+}
 
-    // Display each option with its letter
-    for (size_t i = 0; i < options.size(); i++) {
-        char letter = 'A' + i;  // 'A' + 0 = 'A', 'A' + 1 = 'B', etc.
-        std::cout << " " << letter << ". " << options[i] << std::endl;
+bool MultipleChoiceQuestion::is_valid_input(const std::string& input) const {
+    if (input.length() != 1) return false;
+
+    char inputChar = std::toupper(input[0]);
+    char maxOption = 'A' + static_cast<char>(options.size()) - 1;
+
+    return inputChar >= 'A' && inputChar <= maxOption;
+}
+
+std::string MultipleChoiceQuestion::get_input_prompt() const {
+    std::string prompt = "Please enter ";
+    size_t numOptions = options.size();
+
+    for (size_t i = 0; i < numOptions; ++i) {
+        if (i > 0 && i == numOptions - 1) {
+            prompt += " or ";
+        } else if (i > 0) {
+            prompt += ", ";
+        }
+        prompt += char('A' + i);
     }
-    std::cout << "Your answer: ";
+
+    return prompt;
 }
 
-//New display format for the questions box
-void MultipleChoiceQuestion::display_boxed() {
-    //Top
-    std::cout << "╔══════════════════════════════════════════════════════════╗\n";
-
-    //Question section
-    std::cout << "║  📁 " << ColorTheme::CYAN << category << ColorTheme::RESET;
-    int catLen = category.length();
-    int catPadding = 52 - catLen;
-    for (int i = 0; i < catPadding; i++)
-    {
-        std::cout << " ";
-    }
-    std::cout << " ║\n";
-
-    std::cout << "║  " << questionText;
-
-    //Padding to align the closing border
-    int textlen = questionText.length();
-    int padding = 56 - textlen;
-    for (int i = 0; i < padding; i++)
-    {
-        std::cout << " ";
-    }
-    std::cout << "║\n";
-    std::cout << "║                                                          ║\n";
-
-    //Separator
-    std::cout << "╠══════════════════════════════════════════════════════════╣\n";
-
-    //Display each answer option
-    for (size_t i = 0; i < options.size(); i++){
-        char letter = 'A' + i;
-        std::cout << "║  " << letter << " │ " << options[i];
-
-        //Padding for current option
-        int optionLen = options[i].length();
-        int optionPadding = 52 - optionLen;
-        for(int j = 0; j < optionPadding; j++){
-            std::cout << " ";
-        } 
-        std::cout << "║\n";
-    }
-    //Bottom
-    std::cout << "╚══════════════════════════════════════════════════════════╝\n";
-}
-
-// Check if the user's answer is correct
-bool MultipleChoiceQuestion::checkAnswer(std::string answer) {
-    // Convert answer to uppercase for case-insensitive comparison
-    if (answer.length() != 1) return false;  // Must be single character
-
-    char userAnswer = toupper(answer[0]);  // Convert to uppercase
-    return userAnswer == correctAnswer;    // Compare with correct answer
+void MultipleChoiceQuestion::render_boxed() const {
+    QuestionRenderer::display_multiple_choice_boxed(*this);
 }

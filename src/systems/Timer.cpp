@@ -57,7 +57,6 @@ bool Timer::is_running() const {
 //Display the Countdown bar
 void Timer::display_progress_bar()const{
     int remaining = get_remaining_seconds();
-    int elapsed = get_elapsed_seconds();
 
     //Don't display if no time limit configured
     if (timeLimit <= 0) return;

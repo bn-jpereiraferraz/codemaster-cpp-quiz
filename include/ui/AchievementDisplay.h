@@ -12,7 +12,7 @@ public:
     static void show_unlocked_achievements(const std::vector<Achievement>& achievements);
 
     //Display achievement unlock notification
-    static void show_unlock_notfication(const Achievement& achievement);
+    static void show_unlock_notification(const Achievement& achievement);
 
     //Display achievement progress
     static void show_achievement_progress(const std::string& name, int current, int required);

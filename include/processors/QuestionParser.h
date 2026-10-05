@@ -1,13 +1,34 @@
 #ifndef QUESTIONPARSER_H
 #define QUESTIONPARSER_H
 
-/**
- * Question parsing from file
- * TODO: Implement this class/struct
- */
+#include "models/Question.h"
+#include <string>
+#include <vector>
+#include <memory>
 
-// TODO: Add includes here
+class QuestionParser {
+public:
+    // Parse a question from line (returns unique_ptr for memory safety)
+    static std::unique_ptr<Question> parse_question_line(const std::string& line);
 
-// TODO: Add class/struct definition here
+    // Parse multiple choice options
+    static std::vector<std::string> parse_options(const std::string& optionsStr);
 
-#endif // QUESTIONPARSER_H
+    // Validate question format
+    static bool is_valid_format(const std::string& line);
+
+    // Count fields in line
+    static int count_fields(const std::string& line);
+
+private:
+    // Split line into fields by delimiter
+    static std::vector<std::string> split_fields(const std::string& line);
+
+    // Parse multiple choice question from fields
+    static std::unique_ptr<Question> parse_multiple_choice(const std::vector<std::string>& fields);
+
+    // Parse true or false question from field
+    static std::unique_ptr<Question> parse_true_false(const std::vector<std::string>& fields);
+};
+
+#endif

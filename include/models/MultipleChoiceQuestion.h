@@ -2,6 +2,7 @@
 #define MULTIPLECHOICEQUESTION_H
 
 #include "models/Question.h"
+#include "core/Constants.h"
 #include <vector>
 #include <string>
 
@@ -14,17 +15,31 @@ private:
     char correctAnswer;                // Correct option letter
 
 public:
-    MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct);
-    MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat);
-    MultipleChoiceQuestion(std::string text, int pts, std::vector<std::string> opts, char correct, std::string cat, std::string h1, std::string h2, std::string h3);
-    ~MultipleChoiceQuestion();
+    MultipleChoiceQuestion(const std::string& text, int pts,
+                          const std::vector<std::string>& opts, char correct);
+    MultipleChoiceQuestion(const std::string& text, int pts,
+                          const std::vector<std::string>& opts, char correct,
+                          const std::string& cat);
+    MultipleChoiceQuestion(const std::string& text, int pts,
+                          const std::vector<std::string>& opts, char correct,
+                          const std::string& cat,
+                          const std::string& h1, const std::string& h2, const std::string& h3);
+    MultipleChoiceQuestion(const std::string& cat, const std::string& diff,
+                          const std::string& text,
+                          const std::vector<std::string>& opts,
+                          const std::string& ans, int pts,
+                          const std::string& h1, const std::string& h2, const std::string& h3);
+    ~MultipleChoiceQuestion() override = default;
 
-    void display() override;
-    void display_boxed() override;
-    bool checkAnswer(std::string answer) override;
+    // Virtual method implementations
+    bool check_answer(const std::string& answer) const override;
+    bool is_valid_input(const std::string& input) const override;
+    std::string get_input_prompt() const override;
+    std::string get_type() const override { return GameConstants::QUESTION_TYPE_MULTIPLE_CHOICE; }
+    void render_boxed() const override;
 
-    // Getters for 50/50 lifeline
-    std::vector<std::string> get_options() const { return options; }
+    // Getters for rendering and 50/50 lifeline
+    const std::vector<std::string>& get_options() const { return options; }
     char get_correct_answer() const { return correctAnswer; }
 };
 
